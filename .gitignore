@@ -1,2 +1,11 @@
+# Virtual environments
+whisper_venv
+demucs_venv
 venv
+
+#Cache
+__pycache__
+
+# Data
+data
 output
