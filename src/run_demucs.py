@@ -4,8 +4,7 @@ import subprocess
 
 
 audio_path = Path(sys.argv[1]).resolve()
-project_root = Path(__file__).resolve().parent.parent
-output_dir = project_root / "output"
+output_dir = Path(sys.argv[2]).resolve()
 
 model = "htdemucs_ft"
 

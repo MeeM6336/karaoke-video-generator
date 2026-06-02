@@ -4,10 +4,7 @@ from pathlib import Path
 import sys
 import os
 
-def to_json(filename, segments):
-  current_dir = os.path.dirname(os.path.abspath(__file__))
-  project_root = os.path.dirname(current_dir)
-  output_dir = os.path.join(project_root, "output")
+def to_json(filename, output_dir, segments):
   json_path = os.path.join(output_dir, f"{filename}.json")
 
   with open(json_path, "w", encoding="utf-8") as f:
