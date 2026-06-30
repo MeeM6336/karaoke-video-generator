@@ -2,8 +2,8 @@ import requests
 import yt_dlp
 import subprocess
 from pathlib import Path
-from pipeline.util import lrc_to_segments, to_json
-from pipeline.ass_generation import aligned_segments_to_ass
+from video.util import lrc_to_segments, to_json
+from video.ass_generation import aligned_segments_to_ass
 
 
 def run_menu():
@@ -124,7 +124,7 @@ def video_generation(yt_link=None, audio_path="", video_path="", output_path=Non
   instrumental_path = temp_dir / "htdemucs_ft" / Path(audio_path).stem / "no_vocals.wav"
 
   if output_path is None:
-    output_path = temp_dir / "output_video.mp4"
+    output_path = "output/output_video.mp4"
 
   cmd = [
     "ffmpeg",

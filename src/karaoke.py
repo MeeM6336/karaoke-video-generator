@@ -3,13 +3,13 @@ import argparse
 import os
 import shutil
 import sys
-from pipeline.video_generation import video_generation
+from video.video_generation import video_generation
 
-# python src/main.py  --audio_file "data/ayby.mp3" --video_file "data/beach2.mp4" --output_file "data/ayby_karaoke.mp4"
-# python src/main.py  --yt_link "https://www.youtube.com/watch?v=x7mHRNfo-zc" --video_file "data/beach2.mp4" --output_file "output/at the end of the day.mp4"
-# python src/main.py  --yt_link "https://www.youtube.com/watch?v=Y6yLKQV4lrM" --video_file "data/beach2.mp4" --output_file "output/id.mp4"
-# python src/main.py  --audio_file "data/keshi - Touch.mp3" --video_file "data/beach2.mp4" --output_file "output/keshi - Touch.mp4"
-# python src/cli.py  --yt_link "https://www.youtube.com/watch?v=33kwtdW-6xY" --video_file "data/beach2.mp4" --output_file "output/alright.mp4"
+# python src/karaoke.py  --audio_file "data/ayby.mp3" --video_file "data/beach2.mp4" --output_file "data/ayby_karaoke.mp4"
+# python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=x7mHRNfo-zc" --video_file "data/beach2.mp4" --output_file "output/at the end of the day.mp4"
+# python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=Y6yLKQV4lrM" --video_file "data/beach2.mp4" --output_file "output/id.mp4"
+# python src/karaoke.py  --audio_file "data/keshi - Touch.mp3" --video_file "data/beach2.mp4" --output_file "output/keshi - Touch.mp4"
+# python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=33kwtdW-6xY" --video_file "data/beach2.mp4" --output_file "output/alright.mp4"
 
 def main():
   current_dir = Path(__file__).resolve().parent
