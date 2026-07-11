@@ -35,7 +35,17 @@ def segment_to_ass(segment):
 
     return ass_text
 
-def aligned_segments_to_ass(json_path, output_path, track_name):
+def rgb_to_ass(hex_color, alpha = 0):
+    hex_color = hex_color.lstrip("#")
+    r = hex_color[0:2]
+    g = hex_color[2:4]
+    b = hex_color[4:6]
+
+    aa = f"{alpha:02X}"
+
+    return f"&H{aa}{b}{g}{r}&"
+
+def aligned_segments_to_ass(json_path, output_path, track_name, font_color):
     with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
@@ -55,7 +65,7 @@ Original Timing: Generated
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,Arial,24,&H00FFFFFF,&H000C41EA,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,1.5,0,8,2,2,20,1
+Style: Default,Arial,32,{rgb_to_ass(font_color)},&H00FFFFFF,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,1.5,0,8,2,2,20,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
@@ -71,7 +81,6 @@ Comment: 0,0:00:00.00,0:00:00.00,Default,,0,0,0,template pre-line all keeptags,!
         
         lead_out = 0.2 
         
-        # Replicate the logic in the Aegisub template for the starting fade/buffer
         if c_start_sec < 0.9:
             d_start_sec = 0.0
             k_lead = int(round(c_start_sec * 100))
@@ -88,25 +97,18 @@ Comment: 0,0:00:00.00,0:00:00.00,Default,,0,0,0,template pre-line all keeptags,!
         d_start_fmt = format_time(d_start_sec)
         d_end_fmt = format_time(d_end_sec)
         
-        # Generate the \k tags
         text = segment_to_ass(segment)
         
-        # 1. The raw karaoke data line
         comments.append(
             f"Comment: 0,{c_start_fmt},{c_end_fmt},Default,,0,0,0,karaoke,{text}"
         )
         
-        # 2. The rendered fx line
         d_text = f"{{\\k{k_lead}\\fad({fade_in_ms},200)}}{text}"
         dialogues.append(
             f"Dialogue: 0,{d_start_fmt},{d_end_fmt},Default,,0,0,0,fx,{d_text}"
         )
 
-    # Combine blocks: Comments first, then Dialogues
     ass_content = header + "\n".join(comments) + "\n" + "\n".join(dialogues) + "\n"
 
     with open(output_path, "w", encoding="utf-8") as f:
         f.write(ass_content)
-
-# Example Usage:
-# json_to_ass("words.json", "output.ass", "Song Title")

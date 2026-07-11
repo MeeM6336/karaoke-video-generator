@@ -47,36 +47,56 @@ def run_menu():
       continue
 
     
-def download_yt(url, output_dir):
+def download_yt(download_type, url, output_dir):
   output_dir = Path(output_dir)
-  output_file = str(output_dir / "%(title)s.%(ext)s")
+  output_template = str(output_dir / "%(title)s.%(ext)s")
 
   ydl_opts = {
-    "format": "bestaudio/best",
-    "outtmpl": output_file,
-    "postprocessors": [
-      {
-        "key": "FFmpegExtractAudio",
-        "preferredcodec": "wav"
-      }
-    ]
+    "outtmpl": output_template,
+    "cookiesfrombrowser": ("firefox",),
+    "js_runtimes": {
+        "node": {}
+    },
+    "remote_components": ["ejs:github"]
   }
+
+  if download_type == "audio":
+    ydl_opts["format"] = "bestaudio"
+    ydl_opts["postprocessors"] = [{
+      "key": "FFmpegExtractAudio",
+      "preferredcodec": "wav",
+    }]
+
+  elif download_type == "video":
+    ydl_opts["format"] = "bestvideo[ext=mp4]/bestvideo"
+
+  else:
+    raise ValueError("download_type must be 'audio' or 'video'")
 
   with yt_dlp.YoutubeDL(ydl_opts) as ydl:
     info = ydl.extract_info(url, download=True)
-    original_file = ydl.prepare_filename(info)
+    original_file = Path(ydl.prepare_filename(info))
 
-  return str(Path(original_file).with_suffix(".wav"))
+  if download_type == "audio":
+    return str(original_file.with_suffix(".wav"))
+  else:
+    return str(original_file.with_suffix(".mp4"))
 
 
-def video_generation(yt_link=None, audio_path="", video_path="", output_path=None, temp_dir=None):
+def video_generation(font_color, yt_link=None, audio_path="", video_path="", output_path=None, temp_dir=None):
   segments_path = None
   track_name = None
 
   audio_path = (
     audio_path
     if audio_path is not None
-    else download_yt(yt_link, temp_dir)
+    else download_yt("audio", yt_link, temp_dir)
+  )
+
+  video_path = (
+    video_path
+    if video_path is not None
+    else download_yt("video", yt_link, temp_dir)
   )
 
   segments, track_name = run_menu()
@@ -87,7 +107,7 @@ def video_generation(yt_link=None, audio_path="", video_path="", output_path=Non
   result = subprocess.run(
     [
       r"demucs_venv\Scripts\python.exe",
-      "src/pipeline/run_demucs.py",
+      "src/video/run_demucs.py",
       audio_path,
       str(temp_dir)
     ],
@@ -99,7 +119,7 @@ def video_generation(yt_link=None, audio_path="", video_path="", output_path=Non
   vocal_path = result.stdout.strip()
   cmd = [
     r"whisper_venv\Scripts\python.exe",
-		"src/pipeline/run_whisperx.py"
+		"src/video/run_whisperx.py"
   ]
 
   if segments_path is not None:
@@ -118,7 +138,7 @@ def video_generation(yt_link=None, audio_path="", video_path="", output_path=Non
   # Generate .ass file
   aligned_dir = temp_dir / "aligned_segments.json"
   ass_dir = temp_dir / "lyrics.ass"
-  aligned_segments_to_ass(aligned_dir, ass_dir, track_name)
+  aligned_segments_to_ass(aligned_dir, ass_dir, track_name, font_color)
 
   # Create video
   instrumental_path = temp_dir / "htdemucs_ft" / Path(audio_path).stem / "no_vocals.wav"

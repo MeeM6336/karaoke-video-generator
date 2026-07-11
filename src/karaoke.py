@@ -10,6 +10,7 @@ from video.video_generation import video_generation
 # python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=Y6yLKQV4lrM" --video_file "data/beach2.mp4" --output_file "output/id.mp4"
 # python src/karaoke.py  --audio_file "data/keshi - Touch.mp3" --video_file "data/beach2.mp4" --output_file "output/keshi - Touch.mp4"
 # python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=33kwtdW-6xY" --video_file "data/beach2.mp4" --output_file "output/alright.mp4"
+# python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=ghUTY5zK-gQ" --output_file "output/WANTCHU.mp4"
 
 def main():
   current_dir = Path(__file__).resolve().parent
@@ -41,7 +42,7 @@ def main():
   parser.add_argument(
     "--video_file",
     type=str,
-    required=True,
+    required=False,
     help="Path to the input background video file (.mp4)."
   )
 
@@ -52,10 +53,22 @@ def main():
     help="Path to the output video file (.mp4)."
   )
 
+  parser.add_argument(
+    "--font_color",
+    type=str,
+    required=False,
+    default="00FFFF",
+    help="Font color for the karaoke text."
+  )
+
   # Argument parsing and validation
   args = parser.parse_args()
   if args.audio_file is None and args.yt_link is None:
     print("Either --audio_file or --yt_link must be provided.")
+    sys.exit(1)
+
+  if args.video_file is None and args.yt_link is None:
+    print("Either --video_file or --yt_link must be provided.")
     sys.exit(1)
 
   if args.audio_file is not None:
@@ -63,16 +76,20 @@ def main():
       print(f"Audio file not found: {args.audio_file}")
       sys.exit(1)
 
-  if not os.path.exists(args.video_file):
-    print(f"Video file not found: {args.video_file}")
-    sys.exit(1)
+  if args.video_file is not None:
+    if not os.path.exists(args.video_file):
+      print(f"Video file not found: {args.video_file}")
+      sys.exit(1)
+
+  # Need to validate font color is a valid hex code
 
   video_generation(
     yt_link=args.yt_link,
     audio_path=args.audio_file,
     video_path=args.video_file,
     output_path=args.output_file,
-    temp_dir=temp_dir
+    temp_dir=temp_dir,
+    font_color=args.font_color
   )
 
   # Cleanup

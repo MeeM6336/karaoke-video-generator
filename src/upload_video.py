@@ -26,8 +26,6 @@ def authenticate_youtube():
 
 
 def upload_video_to_youtube(youtube, video_file, title, tags=None):
-  print(f"Uploading video: {video_file} with title: '{title}' and tags: {tags}")
-
   request_body = {
     "snippet": {
       "title": title,
@@ -42,14 +40,20 @@ def upload_video_to_youtube(youtube, video_file, title, tags=None):
 
   media_file = MediaFileUpload(video_file, chunksize=-1, resumable=True)
 
-  youtube.videos().insert(
+  request = youtube.videos().insert(
     part="snippet,status",
     body=request_body,
     media_body=media_file
   )
 
-  print(f"Upload complete!")
+  response = None
 
+  while response is None:
+    print("Uploading file...")
+    status, response = request.next_chunk()
+    if response is not None:
+      if 'id' in response:
+        print(f"Video id '{response['id']}' was successfully uploaded.")
 
 def main():
   youtube = authenticate_youtube()
