@@ -35,7 +35,7 @@ def segment_to_ass(segment):
 
     return ass_text
 
-def rgb_to_ass(hex_color, alpha = 0):
+def hex_to_ass(hex_color, alpha = 0):
     hex_color = hex_color.lstrip("#")
     r = hex_color[0:2]
     g = hex_color[2:4]
@@ -65,7 +65,7 @@ Original Timing: Generated
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,Arial,32,{rgb_to_ass(font_color)},&H00FFFFFF,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,1.5,0,8,2,2,20,1
+Style: Default,Arial,32,{hex_to_ass(font_color)},&H00FFFFFF,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,1.5,0,8,2,2,20,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text

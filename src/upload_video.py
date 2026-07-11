@@ -4,8 +4,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
-# python src/upload_video.py --title "Wallows - At The End of the Day (Karaoke Version)" --video_path "output/at the end of the day.mp4" --tags "karaoke,lyrics,music,wallows"
-
+# python src/upload_video.py --title "Wallows - 1980s Horror Film II (Karaoke)" --video_path "output/1980s horror film 2.mp4" --tags "karaoke,lyrics,music,wallows" --artist "Wallows" --song "1980s Horror Film II"
 
 CLIENT_SECRETS_FILE = "client_secrets.json"
 
@@ -25,16 +24,33 @@ def authenticate_youtube():
   return youtube
 
 
-def upload_video_to_youtube(youtube, video_file, title, tags=None):
+def upload_video_to_youtube(youtube, video_file, title, artist, song, tags=None):
+  description = f"""
+    #Karaoke #Lyrics #Music #Karaokeversion
+
+    🎤 Want to request your favorite songs? Leave a comment below and just wait for your best karaoke night
+    
+    🎵 Make sure to like & subscribe and hit the bell icon so you don't miss out on the latest songs
+    
+    ⭐ Original Song Credit:
+    Originally performed  by artist {artist}
+
+    Artist: {artist}
+    Song: {song}
+
+    Disclaimer:
+    This karaoke/instrumental version was created for entertainment purposes. All rights to the original composition, lyrics, and master recording belong to their respective copyright owners.
+    """
+
   request_body = {
     "snippet": {
       "title": title,
-      "description": f"Karaoke lyric video for {title}",
+      "description": description,
       "tags": tags or [],
       "categoryId": "10"
     },
     "status": {
-      "privacyStatus": "private"
+      "privacyStatus": "public"
     }
   }
 
@@ -59,7 +75,7 @@ def main():
   youtube = authenticate_youtube()
 
   parser = argparse.ArgumentParser(
-    description="Generate a karaoke video with synchronized lyrics.",
+    description="Upload karaoke video to YouTube",
     formatter_class=argparse.ArgumentDefaultsHelpFormatter
   )
 
@@ -84,14 +100,29 @@ def main():
     help="Comma-separated tags for the video."
   )
 
+  parser.add_argument(
+    "--artist",
+    type=str,
+    required=True,
+    help="Artist name."
+  )
+
+  parser.add_argument(
+    "--song",
+    type=str,
+    required=True,
+    help="Song name."
+  )
+
   args = parser.parse_args()
 
   video_file = args.video_path
   title = args.title
   tags = [tag.strip() for tag in args.tags.split(",")]
+  artist = args.artist
+  song = args.song
 
-  upload_video_to_youtube(youtube, video_file, title, tags)
+  upload_video_to_youtube(youtube, video_file, title, artist, song, tags)
 
 if __name__ == "__main__":
   main()
-

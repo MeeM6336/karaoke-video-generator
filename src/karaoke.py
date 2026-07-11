@@ -9,8 +9,10 @@ from video.video_generation import video_generation
 # python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=x7mHRNfo-zc" --video_file "data/beach2.mp4" --output_file "output/at the end of the day.mp4"
 # python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=Y6yLKQV4lrM" --video_file "data/beach2.mp4" --output_file "output/id.mp4"
 # python src/karaoke.py  --audio_file "data/keshi - Touch.mp3" --video_file "data/beach2.mp4" --output_file "output/keshi - Touch.mp4"
-# python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=33kwtdW-6xY" --video_file "data/beach2.mp4" --output_file "output/alright.mp4"
+# python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=33kwtdW-6xY" --output_file "output/alright.mp4" --font_color "#87CEEB"
 # python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=ghUTY5zK-gQ" --output_file "output/WANTCHU.mp4"
+# python src/karaoke.py  --audio_file "data/the one that got away.wav" --video_file "data/totga.mp4" --output_file "output/the one that got away.mp4" --font_color "#FF69B4"
+
 
 def main():
   current_dir = Path(__file__).resolve().parent
@@ -57,7 +59,7 @@ def main():
     "--font_color",
     type=str,
     required=False,
-    default="00FFFF",
+    default="#00FFFF",
     help="Font color for the karaoke text."
   )
 
@@ -81,7 +83,9 @@ def main():
       print(f"Video file not found: {args.video_file}")
       sys.exit(1)
 
-  # Need to validate font color is a valid hex code
+  if args.font_color is not None and not args.font_color.startswith("#") and len(args.font_color) == 6:
+    print(f"Invalid font color: {args.font_color}. Please provide a valid hex code (e.g., #00FFFF).")
+    sys.exit(1)
 
   video_generation(
     yt_link=args.yt_link,
