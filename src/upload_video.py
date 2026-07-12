@@ -5,6 +5,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
 # python src/upload_video.py --title "Wallows - Uncomfortable (Karaoke)" --video_path "output/uncomfortable.mp4" --tags "karaoke,lyrics,music,wallows" --artist "Wallows" --song "Uncomfortable"
+# python src/upload_video.py --title "Joji - Past Won't Leave My Bed (Karaoke)" --video_path "output/past won't leave my bed.mp4" --tags "karaoke,lyrics,music,joji" --artist "Joji" --song "Past Won't Leave My Bed"
 
 CLIENT_SECRETS_FILE = "client_secrets.json"
 
