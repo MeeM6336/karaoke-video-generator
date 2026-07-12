@@ -99,6 +99,9 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
     else download_yt("video", yt_link, temp_dir)
   )
 
+  if output_path is None:
+    output_path = "output/output_video.mp4"
+
   segments, track_name = run_menu()
   
   if segments is not None:
@@ -140,19 +143,44 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   ass_dir = temp_dir / "lyrics.ass"
   aligned_segments_to_ass(aligned_dir, ass_dir, track_name, font_color)
 
-  # Create video
-  instrumental_path = temp_dir / "htdemucs_ft" / Path(audio_path).stem / "no_vocals.wav"
-
-  if output_path is None:
-    output_path = "output/output_video.mp4"
+  # Instrumental clean-up
+  raw_instrumental_dir = temp_dir / "htdemucs_ft" / Path(audio_path).stem / "no_vocals.wav"
+  model_path = Path(output_path).parent / "data" / "model"
+  final_instrumental_path = temp_dir / "audio-separator" / "no_vocals_(Instrumental)_UVR-MDX-NET-Inst_HQ_4.wav"
 
   cmd = [
+    r"demucs_venv\Scripts\audio-separator.exe",
+    str(raw_instrumental_dir),
+    "--model_filename", "UVR-MDX-NET-Inst_HQ_4.onnx",
+    "--model_file_dir", str(model_path),
+    "--output_dir", str(temp_dir / "audio-separator"),
+    "--output_format", "WAV"
+]
+
+  result = subprocess.run(
+    cmd,
+    check=True
+  )
+
+  filters = (
+    "equalizer=f=1500:t=q:w=1.2:g=-2,"
+    "equalizer=f=2800:t=q:w=1.4:g=-2,"
+    "equalizer=f=4200:t=q:w=1.5:g=-2,"
+    "loudnorm"
+  )
+
+  # Create video
+  cmd = [
     "ffmpeg",
+
+    "-y",
 
     "-stream_loop", "-1",
 
     "-i", video_path,
-    "-i", instrumental_path,
+    "-i", final_instrumental_path,
+
+    "-filter:a", filters, 
 
     "-vf", f"ass=output/temp/lyrics.ass,scale=1920:1080",
 

@@ -12,7 +12,7 @@ from video.video_generation import video_generation
 # python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=33kwtdW-6xY" --output_file "output/alright.mp4" --font_color "#87CEEB"
 # python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=ghUTY5zK-gQ" --output_file "output/WANTCHU.mp4"
 # python src/karaoke.py  --audio_file "data/the one that got away.wav" --video_file "data/totga.mp4" --output_file "output/the one that got away.mp4" --font_color "#FF69B4"
-
+# python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=5pG2VPXPITg" --video_file "data/2.mp4" --output_file "output/uncomfortable.mp4" --font_color "#6B93FF"
 
 def main():
   current_dir = Path(__file__).resolve().parent

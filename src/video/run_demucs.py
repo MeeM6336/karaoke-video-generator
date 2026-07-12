@@ -13,6 +13,7 @@ cmd = [
   "-m",
   "demucs",
   "--two-stems=vocals",
+  "--shifts=5",
   "-n", model,
   "-o", str(output_dir),
   str(audio_path)

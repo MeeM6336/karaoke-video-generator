@@ -4,7 +4,7 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
-# python src/upload_video.py --title "Wallows - 1980s Horror Film II (Karaoke)" --video_path "output/1980s horror film 2.mp4" --tags "karaoke,lyrics,music,wallows" --artist "Wallows" --song "1980s Horror Film II"
+# python src/upload_video.py --title "Wallows - Uncomfortable (Karaoke)" --video_path "output/uncomfortable.mp4" --tags "karaoke,lyrics,music,wallows" --artist "Wallows" --song "Uncomfortable"
 
 CLIENT_SECRETS_FILE = "client_secrets.json"
 
