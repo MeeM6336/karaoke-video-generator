@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QWidget, QHBoxLayout, QPushButton, QProgressBar
 from PySide6.QtCore import Signal
 
-class CreateTaskBar(QWidget):
+class TaskBar(QWidget):
 
     start_clicked = Signal(int)
 
@@ -40,6 +40,7 @@ class CreateTaskBar(QWidget):
                 color: #ffffff;
             }
         """
+        
         self.setStyleSheet(start_button_style)
 
         layout.addWidget(self.progress_bar)

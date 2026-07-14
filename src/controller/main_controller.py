@@ -1,4 +1,4 @@
-from PySide6.QtCore import QThread, QProcess
+from PySide6.QtCore import QProcess
 from pathlib import Path
 import sys
 

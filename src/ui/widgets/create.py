@@ -1,7 +1,7 @@
-from PySide6.QtWidgets import QWidget, QLineEdit, QPushButton, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout
 from PySide6.QtCore import Qt
 from ui.components.file_upload import FileUpload
-from ui.components.create_task_bar import CreateTaskBar
+from ui.components.task_bar import TaskBar
 
 
 class Create(QWidget):
@@ -66,7 +66,7 @@ class Create(QWidget):
         self.audio_upload = FileUpload("Audio", "Select an audio file", set_read_only=True)
         self.video_upload = FileUpload("Video", "Select a background video file", set_read_only=True)
         self.output_upload = FileUpload("Output", "Select a folder to output video", set_read_only=True)
-        self.taskbar = CreateTaskBar()
+        self.taskbar = TaskBar()
 
         layout.addWidget(self.youtube_url)
         layout.addWidget(self.audio_upload)
