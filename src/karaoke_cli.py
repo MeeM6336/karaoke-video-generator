@@ -63,8 +63,16 @@ def main():
     help="Font color for the karaoke text."
   )
 
+  parser.add_argument(
+    "--query",
+    type=str,
+    required=False,
+    help="Query to lookup song lyrics using artist and song name"
+  )
+
   # Argument parsing and validation
   args = parser.parse_args()
+
   if args.audio_file is None and args.yt_link is None:
     print("Either --audio_file or --yt_link must be provided.")
     sys.exit(1)
@@ -93,7 +101,8 @@ def main():
     video_path=args.video_file,
     output_path=args.output_file,
     temp_dir=temp_dir,
-    font_color=args.font_color
+    font_color=args.font_color,
+    query=args.query
   )
 
   # Cleanup

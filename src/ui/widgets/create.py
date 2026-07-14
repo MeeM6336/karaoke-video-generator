@@ -60,6 +60,9 @@ class Create(QWidget):
         self.filename = QLineEdit()
         self.filename.setPlaceholderText("Output Filename")
 
+        self.song_lyric_query = QLineEdit()
+        self.song_lyric_query.setPlaceholderText("Song name and artist to search for song lyrics")
+
         self.audio_upload = FileUpload("Audio", "Select an audio file", set_read_only=True)
         self.video_upload = FileUpload("Video", "Select a background video file", set_read_only=True)
         self.output_upload = FileUpload("Output", "Select a folder to output video", set_read_only=True)
@@ -71,6 +74,7 @@ class Create(QWidget):
         layout.addWidget(self.output_upload)
         layout.addWidget(self.filename)
         layout.addWidget(self.font_color)
+        layout.addWidget(self.song_lyric_query)
         layout.addWidget(self.taskbar)
 
         self.setLayout(layout)
@@ -113,10 +117,11 @@ class Create(QWidget):
     
     def get_job(self):
         return {
-            "youtube_url": self.youtube_url.text(),
-            "audio_path": self.audio_upload.get_path(),
-            "video_path": self.video_upload.get_path(),
+            "yt_link": self.youtube_url.text(),
+            "audio_file": self.audio_upload.get_path(),
+            "video_file": self.video_upload.get_path(),
             "output_dir": self.output_upload.get_path(),
             "filename": self.filename.text(),
             "font_color": self.font_color.text(),
+            "query": self.song_lyric_query.text()
         }

@@ -5,8 +5,40 @@ from pathlib import Path
 from video.util import lrc_to_segments, to_json
 from video.ass_generation import aligned_segments_to_ass
 
+def get_lyrics(query):
+  headers = {
+    "User-Agent": "Mozilla/5.0"
+  }
 
-def run_menu():
+  try:
+    url = "https://lrclib.net/api/search"
+    params = {
+      "q": query
+    }
+    response = requests.get(url, params=params, headers=headers)
+    response.raise_for_status()
+
+    if response.status_code == 204:
+      print("No results found. Please try a different search.")
+      return
+
+    results = response.json()
+
+    return results
+
+  except requests.exceptions.RequestException as e:
+    print(f"Error fetching data: {e}")
+    return
+
+
+def run_menu(query=None):
+  if query is not None:
+    results = get_lyrics(query)
+
+    segments = lrc_to_segments(results[0]['syncedLyrics'])
+
+    return segments, results[0]['trackName']
+
   while True:
     print("Please search for the song to sync lyrics too, or (-1) to skip and use WhisperX transcription:")
     query = input("> ").strip().lower()
@@ -14,37 +46,17 @@ def run_menu():
     if query == "-1":
       return None, None
 
-    headers = {
-      "User-Agent": "Mozilla/5.0"
-    }
+    results = get_lyrics(query)
 
-    try:
-      url = "https://lrclib.net/api/search"
-      params = {
-        "q": query
-      }
-      response = requests.get(url, params=params, headers=headers)
-      response.raise_for_status()
+    for i, result in enumerate(results[:5], 1):
+      print(f"{i} - {result['artistName']} - {result['trackName']} ({result['albumName']})")
 
-      if response.status_code == 204:
-        print("No results found. Please try a different search.")
-        continue
+    print("Select an input below")
+    choice = int(input("> ").strip().lower()) - 1
 
-      results = response.json()
+    segments = lrc_to_segments(results[choice]['syncedLyrics'])
 
-      for i, result in enumerate(results[:5], 1):
-        print(f"{i} - {result['artistName']} - {result['trackName']} ({result['albumName']})")
-
-      print("Select an input below")
-      choice = int(input("> ").strip().lower()) - 1
-
-      segments = lrc_to_segments(results[choice]['syncedLyrics'])
-
-      return segments, results[choice]['trackName']
-
-    except requests.exceptions.RequestException as e:
-      print(f"Error fetching data: {e}")
-      continue
+    return segments, results[choice]['trackName']
 
     
 def download_yt(download_type, url, output_dir):
@@ -83,7 +95,7 @@ def download_yt(download_type, url, output_dir):
     return str(original_file.with_suffix(".mp4"))
 
 
-def video_generation(font_color, yt_link=None, audio_path="", video_path="", output_path=None, temp_dir=None):
+def video_generation(font_color, yt_link=None, audio_path="", video_path="", output_path=None, temp_dir=None, query=None):
   segments_path = None
   track_name = None
 
@@ -102,7 +114,7 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   if output_path is None:
     output_path = "output/output_video.mp4"
 
-  segments, track_name = run_menu()
+  segments, track_name = run_menu(query)
   
   if segments is not None:
     segments_path = to_json("segments", temp_dir, segments)

@@ -14,12 +14,12 @@ class MainController:
         )
 
         self.process.finished.connect(
-            self.finished
+            self.process_finished
         )
 
 
     def start_karaoke_job(self):
-        cli_path = Path(__file__).parent.parent / "karaoke_cli.py"
+        cli_path = str(Path(__file__).parent.parent / "karaoke_cli.py")
 
         job = self.window.create_widget.get_job()
 
@@ -34,11 +34,16 @@ class MainController:
         if job["video_file"]:
             cmd.extend(["--video_file", job["video_file"]])
 
-        if job["output_file"]:
-            cmd.extend(["--output_file", job["output_file"]])
+        if job["output_dir"] and job["filename"]:
+            file_path = f"{job["output_dir"]}/{job["filename"]}.mp4"
+
+            cmd.extend(["--output_file", file_path])
 
         if job["font_color"]:
             cmd.extend(["--font_color", job["font_color"]])
+
+        if job["query"]:
+            cmd.extend(["--query", job["query"]])
         
         self.process.start(
             sys.executable,
@@ -59,3 +64,6 @@ class MainController:
     def change_page(self, index):
         self.current_page = index
         self.window.stacked_layout.setCurrentIndex(self.current_page)
+    
+    def process_finished(self, exit_code, exit_status):
+        print(f"Finished with exit code {exit_code}")

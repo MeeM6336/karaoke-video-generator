@@ -9,7 +9,7 @@ class CreateTaskBar(QWidget):
         super().__init__()
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(0, 250, 0, 0)
+        layout.setContentsMargins(0, 200, 0, 0)
 
         self.setObjectName("TaskBarWidget")
         self.valid_start = False
