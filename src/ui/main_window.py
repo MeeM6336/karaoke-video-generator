@@ -1,10 +1,10 @@
 from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QStackedLayout, QWidget
 from PySide6.QtCore import QSize
 
-from ui.widgets.convert import Convert
-from ui.widgets.nav_bar import NavBar
-from ui.widgets.create import Create
-from controller.main_controller import MainController
+from src.ui.widgets.convert import Convert
+from src.ui.widgets.nav_bar import NavBar
+from src.ui.widgets.create import Create
+from src.controller.main_controller import MainController
 
 
 class MainWindow(QMainWindow):

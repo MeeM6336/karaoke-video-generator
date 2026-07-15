@@ -1,6 +1,7 @@
 from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QHBoxLayout, QCheckBox
 from PySide6.QtCore import Qt
-from ui.components.task_bar import TaskBar
+from src.ui.components.task_bar import TaskBar
+from src.ui.components.file_upload import FileUpload
 
 
 class Convert(QWidget):
@@ -52,6 +53,9 @@ class Convert(QWidget):
         self.youtube_url.setPlaceholderText("YouTube Video URL")
         self.youtube_url.textEdited.connect(self.validate_url)
 
+        self.output_upload = FileUpload("Output", "Select a folder to output video", set_read_only=True)
+
+
         checkbox_layout = QHBoxLayout()
         checkbox_layout.setAlignment(Qt.AlignLeft)
         checkbox_layout.setSpacing(20)
@@ -69,6 +73,7 @@ class Convert(QWidget):
         checkbox_layout.addWidget(self.audio_checkbox)
 
         layout.addWidget(self.youtube_url)
+        layout.addWidget(self.output_upload)
         layout.addLayout(checkbox_layout)
         layout.addWidget(self.task_bar)
 
@@ -106,12 +111,16 @@ class Convert(QWidget):
 
     def get_audio_check(self):
         return self.audio_checkbox.isChecked()
+    
+    def get_output_path(self):
+        return self.output_upload.get_path()
 
     def get_job(self):
         return {
             "yt_link": self.youtube_url.text(),
             "video": self.get_video_check(),
-            "audio": self.get_audio_check()
+            "audio": self.get_audio_check(),
+            "output_dir": self.get_output_path()
         }
 
         

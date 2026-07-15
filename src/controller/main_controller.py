@@ -7,23 +7,18 @@ class MainController:
     def __init__(self, window):
         self.window = window
         self.current_page = 0
+
         self.process = QProcess()
 
-        self.process.readyReadStandardOutput.connect(
-            self.read_output
-        )
-
-        self.process.finished.connect(
-            self.process_finished
-        )
+        self.process.readyReadStandardOutput.connect(self.read_stdout)
+        self.process.readyReadStandardError.connect(self.read_stderr)
+        self.process.finished.connect(self.process_finished)
 
 
     def start_karaoke_job(self):
-        cli_path = str(Path(__file__).parent.parent / "karaoke_cli.py")
-
         job = self.window.create_widget.get_job()
 
-        cmd = [cli_path]
+        cmd = ["-m", "src.cli.karaoke_cli"]
 
         if job["yt_link"]:
             cmd.extend(["--yt_link", job["yt_link"]])
@@ -54,19 +49,47 @@ class MainController:
 
     def start_convert_job(self):
         job = self.window.convert_widget.get_job()
-    
-    
-    def read_output(self):
-        text = bytes(
-            self.process.readAllStandardOutput()
-        ).decode()
 
-        print(text)
+        cmd = ["-m",  "src.cli.convert_cli","--yt_link", job["yt_link"], "--output_dir", job["output_dir"]]
+
+        if job["audio"]:
+            cmd.append("--audio")
+        
+        if job["video"]:
+            cmd.append("--video")
+
+        self.process.start(
+            sys.executable,
+            cmd
+        )
 
 
     def change_page(self, index):
         self.current_page = index
         self.window.stacked_layout.setCurrentIndex(self.current_page)
     
+    def process_finished(self, exit_code, exit_status):
+        print(f"Finished with exit code {exit_code}")
+
+    def read_stdout(self):
+        text = bytes(
+            self.process.readAllStandardOutput()
+        ).decode(errors="replace")
+
+        if text:
+            print("STDOUT:")
+            print(text)
+
+
+    def read_stderr(self):
+        text = bytes(
+            self.process.readAllStandardError()
+        ).decode(errors="replace")
+
+        if text:
+            print("STDERR:")
+            print(text)
+
+
     def process_finished(self, exit_code, exit_status):
         print(f"Finished with exit code {exit_code}")

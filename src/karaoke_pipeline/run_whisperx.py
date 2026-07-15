@@ -2,7 +2,7 @@ import json
 import sys
 from pathlib import Path
 import whisperx
-from util import to_json
+from src.util.util import to_json
 
 
 if len(sys.argv) == 4:

@@ -1,7 +1,6 @@
 from PySide6.QtWidgets import QVBoxLayout, QWidget, QPushButton
 from PySide6.QtCore import Qt, Signal
 
-
 class NavBar(QWidget):
 
     page_changed = Signal(int)

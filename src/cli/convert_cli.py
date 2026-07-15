@@ -45,20 +45,22 @@ def main():
 
     parser.add_argument(
         "--audio",
-        type=str,
+        action="store_true",
+        default=False,
         required=False,
         help="To audio?"
     )
 
     parser.add_argument(
         "--video",
-        type=str,
+        action="store_true",
+        default=False,
         required=False,
         help="To video?"
     )
 
     parser.add_argument(
-        "--output_file",
+        "--output_dir",
         type=str,
         required=True,
         help="Output file path"
@@ -68,11 +70,11 @@ def main():
 
     if args.audio:
         print("Converting to audio...")
-        convert_yt("audio", args.yt_link, args.output_file)
+        convert_yt("audio", args.yt_link, args.output_dir)
 
     elif args.video:
         print("Converting to video...")
-        convert_yt("video", args.yt_link, args.output_file)
+        convert_yt("video", args.yt_link, args.output_dir)
 
 if __name__ == "__main__":
     main()

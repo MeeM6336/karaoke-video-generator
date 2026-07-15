@@ -2,8 +2,8 @@ import requests
 import yt_dlp
 import subprocess
 from pathlib import Path
-from video.util import lrc_to_segments, to_json
-from video.ass_generation import aligned_segments_to_ass
+from src.util.util import lrc_to_segments, to_json
+from src.karaoke_pipeline.ass_generation import aligned_segments_to_ass
 
 def get_lyrics(query):
   headers = {
@@ -122,7 +122,8 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   result = subprocess.run(
     [
       r"demucs_venv\Scripts\python.exe",
-      "src/video/run_demucs.py",
+      "-m",
+      "src.video.run_demucs",
       audio_path,
       str(temp_dir)
     ],
@@ -134,7 +135,8 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   vocal_path = result.stdout.strip()
   cmd = [
     r"whisper_venv\Scripts\python.exe",
-		"src/video/run_whisperx.py"
+    "-m"
+		"src.video.run_whisperx"
   ]
 
   if segments_path is not None:

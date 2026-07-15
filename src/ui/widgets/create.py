@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout
 from PySide6.QtCore import Qt
-from ui.components.file_upload import FileUpload
-from ui.components.task_bar import TaskBar
+from src.ui.components.file_upload import FileUpload
+from src.ui.components.task_bar import TaskBar
 
 
 class Create(QWidget):

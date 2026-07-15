@@ -3,7 +3,7 @@ import argparse
 import os
 import shutil
 import sys
-from video.video_generation import video_generation
+from src.karaoke_pipeline.video_generation import video_generation
 
 # python src/karaoke.py  --audio_file "data/ayby.mp3" --video_file "data/beach2.mp4" --output_file "data/ayby_karaoke.mp4"
 # python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=x7mHRNfo-zc" --video_file "data/beach2.mp4" --output_file "output/at the end of the day.mp4"
@@ -15,8 +15,7 @@ from video.video_generation import video_generation
 # python src/karaoke.py  --yt_link "https://www.youtube.com/watch?v=5pG2VPXPITg" --video_file "data/2.mp4" --output_file "output/uncomfortable.mp4" --font_color "#6B93FF"
 
 def main():
-  current_dir = Path(__file__).resolve().parent
-  project_root = current_dir.parent
+  project_root = Path(__file__).resolve().parent.parent.parent
   output_dir = project_root / "output"
   output_dir.mkdir(exist_ok=True)
   temp_dir = project_root / "output" / "temp"
