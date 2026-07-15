@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QStackedLayout, QWidget
 from PySide6.QtCore import QSize
 
-from ui.layout_colorwidget import Color
+from ui.widgets.convert import Convert
 from ui.widgets.nav_bar import NavBar
 from ui.widgets.create import Create
 from controller.main_controller import MainController
@@ -33,8 +33,9 @@ class MainWindow(QMainWindow):
             self.controller.start_karaoke_job
         )
 
+        self.convert_widget = Convert()
         self.stacked_layout.addWidget(self.create_widget)
-        self.stacked_layout.addWidget(Color("#bd2929"))
+        self.stacked_layout.addWidget(self.convert_widget)
 
 
         self.stacked_layout.setCurrentIndex(0)
