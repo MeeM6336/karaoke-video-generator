@@ -48,7 +48,7 @@ class TaskBar(QWidget):
         self.setLayout(layout)
 
     def set_valid_start(self, enabled: bool):
-        self.valid_start = enabled
+        self.valid_start = True
         self.start_button.setEnabled(enabled)
     
     def set_progress(self, progress):

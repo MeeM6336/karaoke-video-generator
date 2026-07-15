@@ -51,6 +51,9 @@ class MainController:
         )
 
         #self.window.create_widget.taskbar.set_progress(10)
+
+    def start_convert_job(self):
+        job = self.window.convert_widget.get_job()
     
     
     def read_output(self):

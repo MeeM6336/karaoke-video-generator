@@ -96,7 +96,7 @@ class Create(QWidget):
         self.valid_url = text.startswith(valid_urls)
         self._update_valid_start()
 
-    def _on_path_changed(self, path: str):
+    def _on_path_changed(self):
         self._update_valid_start()
 
     def _update_valid_start(self):

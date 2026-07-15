@@ -34,6 +34,10 @@ class MainWindow(QMainWindow):
         )
 
         self.convert_widget = Convert()
+        self.convert_widget.task_bar.start_clicked.connect(
+            self.controller.start_convert_job
+        )
+
         self.stacked_layout.addWidget(self.create_widget)
         self.stacked_layout.addWidget(self.convert_widget)
 
