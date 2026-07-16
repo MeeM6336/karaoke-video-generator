@@ -81,10 +81,6 @@ class MainController:
         self.window.stacked_layout.setCurrentIndex(self.current_page)
     
 
-    def process_finished(self, exit_code, exit_status):
-        print(f"Finished with exit code {exit_code}")
-
-
     def read_stdout(self):
         text = bytes(
             self.process.readAllStandardOutput()

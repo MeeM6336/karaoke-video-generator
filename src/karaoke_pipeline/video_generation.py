@@ -123,7 +123,7 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
     [
       r"demucs_venv\Scripts\python.exe",
       "-m",
-      "src.video.run_demucs",
+      "src.karaoke_pipeline.run_demucs",
       audio_path,
       str(temp_dir)
     ],
@@ -136,7 +136,7 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   cmd = [
     r"whisper_venv\Scripts\python.exe",
     "-m"
-		"src.video.run_whisperx"
+		"src.karaoke_pipeline.run_whisperx"
   ]
 
   if segments_path is not None:
@@ -159,7 +159,7 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
 
   # Instrumental clean-up
   raw_instrumental_dir = temp_dir / "htdemucs_ft" / Path(audio_path).stem / "no_vocals.wav"
-  model_path = Path(output_path).parent / "data" / "model"
+  model_path = Path(output_path).parent.parent / "data" / "model"
   final_instrumental_path = temp_dir / "audio-separator" / "no_vocals_(Instrumental)_UVR-MDX-NET-Inst_HQ_4.wav"
 
   cmd = [
