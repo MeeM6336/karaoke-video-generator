@@ -47,6 +47,7 @@ class MainController:
 
         #self.window.create_widget.taskbar.set_progress(10)
 
+
     def start_convert_job(self):
         job = self.window.convert_widget.get_job()
 
@@ -63,13 +64,26 @@ class MainController:
             cmd
         )
 
+    
+    def start_upload_job(self):
+        job = self.window.upload_widget.get_job()
+
+        cmd = ["-m",  "src.cli.upload_cli", "--video_path", job["file_path"], "--title", job["title"], "--tags", job["tags"], "--artist", job["artist"], "--song", job["song"]]
+
+        self.process.start(
+            sys.executable,
+            cmd
+        )
+
 
     def change_page(self, index):
         self.current_page = index
         self.window.stacked_layout.setCurrentIndex(self.current_page)
     
+
     def process_finished(self, exit_code, exit_status):
         print(f"Finished with exit code {exit_code}")
+
 
     def read_stdout(self):
         text = bytes(

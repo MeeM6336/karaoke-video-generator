@@ -28,7 +28,7 @@ class Create(QWidget):
             }
 
             QLineEdit {
-                padding: 5px;
+                padding: 10px;
                 font-size: 14px;
                 background-color: #ffffff;
                 color: #000000;
@@ -67,6 +67,7 @@ class Create(QWidget):
         self.video_upload = FileUpload("Video", "Select a background video file", set_read_only=True)
         self.output_upload = FileUpload("Output", "Select a folder to output video", set_read_only=True)
         self.taskbar = TaskBar()
+        self.taskbar.setContentsMargins(0, 106, 0, 0)
 
         layout.addWidget(self.youtube_url)
         layout.addWidget(self.audio_upload)
@@ -79,9 +80,9 @@ class Create(QWidget):
 
         self.setLayout(layout)
 
-        self.audio_upload.path_changed.connect(self._on_path_changed)
-        self.video_upload.path_changed.connect(self._on_path_changed)
-        self.output_upload.path_changed.connect(self._on_path_changed)
+        self.audio_upload.path_changed.connect(self._update_valid_start)
+        self.video_upload.path_changed.connect(self._update_valid_start)
+        self.output_upload.path_changed.connect(self._update_valid_start)
 
     def validate_url(self, text):
         valid_urls = (
@@ -96,8 +97,6 @@ class Create(QWidget):
         self.valid_url = text.startswith(valid_urls)
         self._update_valid_start()
 
-    def _on_path_changed(self):
-        self._update_valid_start()
 
     def _update_valid_start(self):
         if self.valid_url or (self.get_audio_path() and self.get_video_path()):

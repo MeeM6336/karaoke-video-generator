@@ -9,7 +9,7 @@ class Convert(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.valid_start = False
+        self.valid_url = False
 
         self.setObjectName("ConvertWidget")
         
@@ -22,7 +22,7 @@ class Convert(QWidget):
             }
 
             QLineEdit {
-                padding: 5px;
+                padding: 10px;
                 font-size: 14px;
                 background-color: #ffffff;
                 color: #000000;
@@ -41,12 +41,24 @@ class Convert(QWidget):
                 padding: 6px 15px;
                 font-weight: bold;
             }
+
+            QCheckBox {
+                color: #000000;
+                font-size: 16px;
+                spacing: 8px;
+            }
+
+            QCheckBox::indicator {
+                width: 20px;
+                height: 20px;
+            }
         """
+
         self.setStyleSheet(layout_style)
 
         layout = QVBoxLayout()
         layout.setAlignment(Qt.AlignTop)
-        layout.setSpacing(10)
+        layout.setSpacing(50)
         layout.setContentsMargins(50, 50, 50, 0)
 
         self.youtube_url = QLineEdit()
@@ -55,11 +67,10 @@ class Convert(QWidget):
 
         self.output_upload = FileUpload("Output", "Select a folder to output video", set_read_only=True)
 
-
         checkbox_layout = QHBoxLayout()
         checkbox_layout.setAlignment(Qt.AlignLeft)
         checkbox_layout.setSpacing(20)
-        checkbox_layout.setContentsMargins(10, 10, 50, 450)
+        checkbox_layout.setContentsMargins(10, 10, 50, 300)
 
         self.video_checkbox = QCheckBox()
         self.video_checkbox.setText("Download Video")
@@ -68,6 +79,7 @@ class Convert(QWidget):
         self.audio_checkbox.setText("Download Audio")
 
         self.task_bar = TaskBar()
+        self.task_bar.setContentsMargins(0, 200, 0, 0)
 
         checkbox_layout.addWidget(self.video_checkbox)
         checkbox_layout.addWidget(self.audio_checkbox)
@@ -96,8 +108,10 @@ class Convert(QWidget):
         self.valid_url = text.startswith(valid_urls)
         self._update_valid_start()
 
+
     def _on_check_change(self):
         self._update_valid_start()
+
 
     def _update_valid_start(self):
         if self.valid_url and (self.get_video_check() or self.get_audio_check()):
@@ -106,14 +120,18 @@ class Convert(QWidget):
         else:
             self.task_bar.set_valid_start(False)
             
+
     def get_video_check(self):
         return self.video_checkbox.isChecked()
+
 
     def get_audio_check(self):
         return self.audio_checkbox.isChecked()
     
+
     def get_output_path(self):
         return self.output_upload.get_path()
+
 
     def get_job(self):
         return {

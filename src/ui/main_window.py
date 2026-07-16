@@ -3,7 +3,9 @@ from PySide6.QtCore import QSize
 
 from src.ui.widgets.convert import Convert
 from src.ui.widgets.nav_bar import NavBar
+from src.ui.widgets.edit import Edit
 from src.ui.widgets.create import Create
+from src.ui.widgets.upload import Upload
 from src.controller.main_controller import MainController
 
 
@@ -33,12 +35,22 @@ class MainWindow(QMainWindow):
             self.controller.start_karaoke_job
         )
 
+        self.upload_widget = Upload()
+        self.upload_widget.task_bar.start_clicked.connect(
+            self.controller.start_upload_job
+        )
+
+        self.edit_widget = Edit()
+
+
         self.convert_widget = Convert()
         self.convert_widget.task_bar.start_clicked.connect(
             self.controller.start_convert_job
         )
 
         self.stacked_layout.addWidget(self.create_widget)
+        self.stacked_layout.addWidget(self.upload_widget)
+        self.stacked_layout.addWidget(self.edit_widget)
         self.stacked_layout.addWidget(self.convert_widget)
 
 
