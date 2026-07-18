@@ -79,8 +79,8 @@ class MainController:
     def change_page(self, index):
         self.current_page = index
         self.window.stacked_layout.setCurrentIndex(self.current_page)
+        
     
-
     def read_stdout(self):
         text = bytes(
             self.process.readAllStandardOutput()

@@ -3,6 +3,7 @@ from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtCore import Qt, QUrl, QSize
 from PySide6.QtGui import QIcon
+from superqt import QRangeSlider
 from src.ui.components.file_upload import FileUpload
 
 
@@ -13,6 +14,8 @@ class Edit(QWidget):
 		self.setObjectName("EditWidget")
 
 		self.setAttribute(Qt.WA_StyledBackground, True)
+
+		self.slider_values = (None, None)
 
 		layout_style = """
 			QWidget#EditWidget {
@@ -69,6 +72,10 @@ class Edit(QWidget):
 		self.media_player.setVideoOutput(self.video_widget)
 
 		# Video Controls
+		slider = QRangeSlider(Qt.Horizontal)
+		slider.setRange(0, 30000)
+		slider.setValue((0, 30000))
+
 		self.play_button = QPushButton("Play")
 		self.play_button.setIcon(QIcon("data/assets/icons/play.png"))
 		self.play_button.setIconSize(QSize(24, 24))
@@ -78,6 +85,7 @@ class Edit(QWidget):
 
 		layout.addWidget(self.video_upload)
 		layout.addWidget(self.video_widget)
+		layout.addWidget(slider)
 		control_layout.addWidget(self.play_button)
 		control_layout.addWidget(self.pause_button)
 		layout.addLayout(control_layout)
@@ -88,9 +96,14 @@ class Edit(QWidget):
 		self.play_button.clicked.connect(self.play)
 		self.pause_button.clicked.connect(self.pause)
 
+		#self.slider.valueChanged.connect(self.seek)
+
+
 	def load_video(self, path):
 		self.media_player.setSource(QUrl.fromLocalFile(path))
 		self.media_player.play()
+		self.slider.setRange(0, self.media_player.duration())
+		self.slider.setValue(0, self.media_player.duration())
 
 	def play(self):
 		self.media_player.play()

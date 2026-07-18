@@ -16,10 +16,12 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Kirk Karaoke Dashboard")
         self.setFixedSize(QSize(1440, 900))
+        
 
         self.controller = MainController(self)
 
         main_layout = QHBoxLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
         self.stacked_layout = QStackedLayout()
 
         self.nav_bar = NavBar()
@@ -42,7 +44,6 @@ class MainWindow(QMainWindow):
 
         self.edit_widget = Edit()
 
-
         self.convert_widget = Convert()
         self.convert_widget.task_bar.start_clicked.connect(
             self.controller.start_convert_job
@@ -52,7 +53,6 @@ class MainWindow(QMainWindow):
         self.stacked_layout.addWidget(self.upload_widget)
         self.stacked_layout.addWidget(self.edit_widget)
         self.stacked_layout.addWidget(self.convert_widget)
-
 
         self.stacked_layout.setCurrentIndex(0)
 

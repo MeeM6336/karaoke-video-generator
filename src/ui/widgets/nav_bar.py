@@ -1,65 +1,37 @@
 from PySide6.QtWidgets import QVBoxLayout, QWidget, QPushButton
 from PySide6.QtCore import Qt, Signal
+from PySide6.QtGui import QIcon
+from src.ui.components.nav_bar_button import NavBarButton
 
 class NavBar(QWidget):
-
     page_changed = Signal(int)
 
     def __init__(self):
         super().__init__()
 
         layout = QVBoxLayout(self)
-        layout.setAlignment(Qt.AlignTop)
-        layout.setSpacing(0)
+        layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
         layout.setContentsMargins(0, 0, 0, 0)
 
-        # Nav Bar Buttons
-        nav_button_style = """
-            QPushButton {
-                background: transparent;
-                border: none;
-                padding: 12px 20px;
-                color: white;
-                font-size: 18px;
-                height: 60px;
-            }
+        self.create_button = NavBarButton("Create", 0, "data/assets/icons/create.png")
 
-            QPushButton:hover {
-                background: #2d2d2d;
-            }
+        self.upload_button = NavBarButton("Upload", 1, "data/assets/icons/upload.png")
 
-            QPushButton:pressed {
-                background: #1d1d1d;
-            }
-        """
+        self.edit_button = NavBarButton("Edit", 2, "data/assets/icons/edit.png")
 
-        self.create_button = QPushButton("Create")
-        self.create_button.setStyleSheet(nav_button_style)
-        self.create_button.clicked.connect(
-            lambda: self.page_changed.emit(0)
-        )
-
-        self.upload_button = QPushButton("Upload")
-        self.upload_button.setStyleSheet(nav_button_style)
-        self.upload_button.clicked.connect(
-            lambda: self.page_changed.emit(1)
-        )
-
-        self.edit_button = QPushButton("Edit")
-        self.edit_button.setStyleSheet(nav_button_style)
-        self.edit_button.clicked.connect(
-            lambda: self.page_changed.emit(2)
-        )
-
-        self.convert_button = QPushButton("Convert")
-        self.convert_button.setStyleSheet(nav_button_style)
-        self.convert_button.clicked.connect(
-            lambda: self.page_changed.emit(3)
-        )
+        self.convert_button = NavBarButton("Convert", 3, "data/assets/icons/convert.png")
 
         layout.addWidget(self.create_button)
         layout.addWidget(self.upload_button)
         layout.addWidget(self.edit_button)
         layout.addWidget(self.convert_button)
+
+        for button in (
+            self.create_button,
+            self.convert_button,
+            self.edit_button,
+            self.upload_button,
+        ):
+            button.page_changed.connect(self.page_changed)
         
         self.setLayout(layout)
