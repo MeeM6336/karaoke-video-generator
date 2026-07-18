@@ -9,6 +9,10 @@ __pycache__
 # Output
 output
 
+# Data
+data/oauth
+data/bg_videos
+
 # Secret
 client_secrets.json
 
