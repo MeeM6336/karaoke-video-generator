@@ -6,8 +6,7 @@ venv
 #Cache
 __pycache__
 
-# Data
-data
+# Output
 output
 
 # Secret
