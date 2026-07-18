@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QC
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtCore import Qt, QUrl, QSize
-from PySide6.QtGui import QIcon
+from PySide6.QtGui import QIcon, QColor, QPalette
 from superqt import QRangeSlider
 from src.ui.components.file_upload import FileUpload
 from src.ui.components.task_bar import TaskBar
@@ -57,42 +57,20 @@ class Edit(QWidget):
 			}
 
 			QCheckBox {
-                color: #000000;
-                font-size: 14px;
-                spacing: 8px;
-            }
-
-			QSlider::groove:vertical {
-				background: #ffffff;
-				height: 200px;
-				border-radius: 4px;
-			}
-
-			QSlider::sub-page:vertical {
-				background: #000000;
-				border-radius: 4px;
-			}
-
-			QRangeSlider::groove:horizontal {
-				background: #ffffff;
-				height: 8px;
-				border-radius: 4px;
+				color: #000000;
+				font-size: 14px;
+				spacing: 8px;
 			}
 
 			QRangeSlider::sub-page:horizontal {
-				background: #000000;
-				border-radius: 4px;
-				height: 8px;
+				background: #d9caa3;
 			}
 
-			/* --- Handle (Thumb) --- */
 			QRangeSlider::handle:horizontal {
-				background: white;
-				border: 2px solid #2d8cff;
-				width: 16px;
-				height: 24px;
-				margin: -8px 0;
-				border-radius: 4px;
+				background: #ffffff;
+				border: 2px solid #888;
+				margin: -6px 0;
+				border-radius: 2px;
 			}
 
 			QRangeSlider::handle:horizontal:hover {
@@ -118,10 +96,9 @@ class Edit(QWidget):
 		self.filename = QLineEdit()
 		self.filename.setPlaceholderText("Output Filename")
 
-		# Video Container w/ Volume Control
+		# Video Container
 		video_layout = QHBoxLayout()
-		video_layout.setAlignment(Qt.AlignLeft)
-		video_layout.setSpacing(50)
+		video_layout.setAlignment(Qt.AlignCenter)
 
 		self.video_widget = QVideoWidget()
 		self.video_widget.setFixedSize(896, 504)
@@ -129,23 +106,20 @@ class Edit(QWidget):
 		self.media_player = QMediaPlayer()
 		self.audio = QAudioOutput()
 
-		self.volume_slider = QSlider()
-		self.volume_slider.setTickPosition(QSlider.TicksBothSides)
-
 		self.media_player.setAudioOutput(self.audio)
 		self.media_player.setVideoOutput(self.video_widget)
 
 		video_layout.addWidget(self.video_widget)
-		video_layout.addWidget(self.volume_slider)
 
 		# Video Controls
 		control_layout = QHBoxLayout()
 		control_layout.setAlignment(Qt.AlignCenter)
 
 		self.slider = QRangeSlider(Qt.Horizontal)
-		self.slider.setTickPosition(QSlider.TicksBothSides)
-		self.slider.setRange(0, 30000)
-		self.slider.setValue((0, 30000))
+		self.slider.setTickPosition(QSlider.TicksAbove)
+		self.slider.setRange(0, 3000)
+		self.slider.setValue((0, 1500, 3000))
+		self._last_values = self.slider.value()
 
 		self.play_button = QPushButton("Play")
 		self.play_button.setIcon(QIcon("data/assets/icons/play.png"))
@@ -166,7 +140,7 @@ class Edit(QWidget):
 
 		# Taskbar
 		self.task_bar = TaskBar()
-		self.task_bar.setContentsMargins(0, 6, 0, 0)
+		self.task_bar.setContentsMargins(0, 0, 0, 0)
 
 		# Layout Widgets
 		layout.addWidget(self.video_upload)
@@ -186,14 +160,15 @@ class Edit(QWidget):
 		self.play_button.clicked.connect(self.play)
 		self.pause_button.clicked.connect(self.pause)
 
-		self.slider.valueChanged.connect(self._update_video_position)
+		self.slider.valueChanged.connect(self._on_value_changed)
+
 
 
 	def load_video(self, path):
 		self.media_player.setSource(QUrl.fromLocalFile(path))
 
 		self.slider.setRange(0, self.media_player.duration())
-		self.slider.setValue((0, self.media_player.duration()))
+		self.slider.setValue((0, 0, self.media_player.duration()))
 
 
 	def play(self):
@@ -204,13 +179,20 @@ class Edit(QWidget):
 		self.media_player.pause()
 		
 
-	def _update_video_position(self):
-		self.media_player.setPosition(self.slider.value()[0])
+	def _update_video_position(self, slider_idx):
+		self.media_player.setPosition(self.slider.value()[slider_idx])
+
+	def _on_value_changed(self, values):
+		for i, (old, new) in enumerate(zip(self._last_values, values)):
+			if old != new:
+				self._update_video_position(i)
+
+		self._last_values = values
 
 
 	def _update_slider_range(self, duration):
 		self.slider.setRange(0, duration)
-		self.slider.setValue((0, duration))
+		self.slider.setValue((0, int(duration/2), duration))
 		
 
 	def _update_valid_start(self):
