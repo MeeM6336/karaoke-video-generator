@@ -39,6 +39,14 @@ class Upload(QWidget):
                 padding: 6px 15px;
                 font-weight: bold;
             }
+
+            QPushButton:hover {
+				background-color: #5ba1f0;
+			}
+
+			QPushButton:pressed {
+				background-color: #3a7fcf;
+			}
         """
 
         self.setStyleSheet(layout_style)

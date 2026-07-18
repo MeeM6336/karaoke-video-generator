@@ -42,6 +42,14 @@ class Convert(QWidget):
                 font-weight: bold;
             }
 
+            QPushButton:hover {
+				background-color: #5ba1f0;
+			}
+
+			QPushButton:pressed {
+				background-color: #3a7fcf;
+			}
+
             QCheckBox {
                 color: #000000;
                 font-size: 16px;
@@ -116,9 +124,6 @@ class Convert(QWidget):
     def _update_valid_start(self):
         if self.valid_url and (self.get_video_check() or self.get_audio_check()):
             self.task_bar.set_valid_start(True)
-        
-        else:
-            self.task_bar.set_valid_start(False)
             
 
     def get_video_check(self):
