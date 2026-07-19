@@ -1,8 +1,7 @@
 from pathlib import Path
 import argparse
-import os
-import sys
 import yt_dlp
+
 
 def convert_yt(download_type, url, output_dir):
     output_dir = Path(output_dir)

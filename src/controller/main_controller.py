@@ -76,6 +76,19 @@ class MainController:
         )
 
 
+    def start_edit_job(self):
+        job = self.window.edit_widget.get_job()
+
+        file_path = f"{job["output_dir"]}/{job["filename"]}.mp4"
+
+        cmd = ["-m", "src.cli.edit_cli", "--input_path", job["input_path"], "--output_path", file_path, "--crop", "--start", str(job["start"]), "--end", str(job["end"])]
+
+        self.process.start(
+            sys.executable,
+            cmd
+        )
+
+
     def change_page(self, index):
         self.current_page = index
         self.window.stacked_layout.setCurrentIndex(self.current_page)

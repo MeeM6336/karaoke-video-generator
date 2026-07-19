@@ -2,7 +2,7 @@ from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QC
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtCore import Qt, QUrl, QSize
-from PySide6.QtGui import QIcon, QColor, QPalette
+from PySide6.QtGui import QIcon
 from superqt import QRangeSlider
 from src.ui.components.file_upload import FileUpload
 from src.ui.components.task_bar import TaskBar
@@ -11,6 +11,8 @@ from src.ui.components.task_bar import TaskBar
 class Edit(QWidget):
 	def __init__(self):
 		super().__init__()
+
+		self._dragging = False
 
 		self.setObjectName("EditWidget")
 
@@ -91,7 +93,7 @@ class Edit(QWidget):
 		layout.setContentsMargins(50, 50, 50, 0)
 		layout.setSpacing(12)
 
-		self.video_upload = FileUpload("Video", "Select a video to edit", set_read_only=True)
+		self.input_path = FileUpload("Video", "Select a video to edit", set_read_only=True)
 		self.output_path = FileUpload("Output", "Select a folder to output video", set_read_only=True)
 		self.filename = QLineEdit()
 		self.filename.setPlaceholderText("Output Filename")
@@ -143,7 +145,7 @@ class Edit(QWidget):
 		self.task_bar.setContentsMargins(0, 0, 0, 0)
 
 		# Layout Widgets
-		layout.addWidget(self.video_upload)
+		layout.addWidget(self.input_path)
 		layout.addWidget(self.output_path)
 		layout.addWidget(self.filename)
 		layout.addLayout(video_layout)
@@ -154,7 +156,7 @@ class Edit(QWidget):
 
 		self.setLayout(layout)
 
-		self.video_upload.path_changed.connect(self.load_video)
+		self.input_path.path_changed.connect(self.load_video)
 		self.media_player.durationChanged.connect(self._update_slider_range)
 
 		self.play_button.clicked.connect(self.play)
@@ -162,13 +164,16 @@ class Edit(QWidget):
 
 		self.slider.valueChanged.connect(self._on_value_changed)
 
+		self.media_player.positionChanged.connect(self._update_handle_position)
+
+		self.slider.sliderPressed.connect(lambda: setattr(self, "_dragging", True))
+		self.slider.sliderReleased.connect(lambda: setattr(self, "_dragging", False))
+
+		self.crop_check.stateChanged.connect(self._update_valid_start)
 
 
 	def load_video(self, path):
 		self.media_player.setSource(QUrl.fromLocalFile(path))
-
-		self.slider.setRange(0, self.media_player.duration())
-		self.slider.setValue((0, 0, self.media_player.duration()))
 
 
 	def play(self):
@@ -182,10 +187,11 @@ class Edit(QWidget):
 	def _update_video_position(self, slider_idx):
 		self.media_player.setPosition(self.slider.value()[slider_idx])
 
+
 	def _on_value_changed(self, values):
 		for i, (old, new) in enumerate(zip(self._last_values, values)):
 			if old != new:
-				self._update_video_position(i)
+				self._update_video_position(1)
 
 		self._last_values = values
 
@@ -193,8 +199,48 @@ class Edit(QWidget):
 	def _update_slider_range(self, duration):
 		self.slider.setRange(0, duration)
 		self.slider.setValue((0, int(duration/2), duration))
+
+
+	def _update_handle_position(self, position):
+		if self._dragging:
+			return
+
+		values = list(self.slider.value())
+		values[1] = position
+		self.slider.blockSignals(True)
+		self.slider.setValue(tuple(values))
+		self.slider.blockSignals(False)
 		
 
 	def _update_valid_start(self):
-		if self.valid_url and (self.get_video_check() or self.get_audio_check()):
+		if self.get_crop_check() and self.get_output_dir() and self.get_output_filename():
 			self.task_bar.set_valid_start(True)
+
+
+	def get_crop_check(self):
+		return self.crop_check.isChecked()
+	
+
+	def get_input_path(self):
+		return self.input_path.get_path()
+	
+
+	def get_output_dir(self):
+		return self.output_path.get_path()
+
+
+	def get_output_filename(self):
+		return self.filename.text()
+
+
+	def get_job(self):
+		job = {
+			"input_path": self.get_input_path(),
+			"output_dir": self.get_output_dir(),
+			"filename": self.get_output_filename(),
+			"crop": self.get_crop_check(),
+			"start": int(self.slider.value()[0]),
+			"end": int(self.slider.value()[2])
+		}
+
+		return job

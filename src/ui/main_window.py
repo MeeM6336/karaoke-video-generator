@@ -43,6 +43,9 @@ class MainWindow(QMainWindow):
         )
 
         self.edit_widget = Edit()
+        self.edit_widget.task_bar.start_clicked.connect(
+            self.controller.start_edit_job
+        )
 
         self.convert_widget = Convert()
         self.convert_widget.task_bar.start_clicked.connect(
