@@ -101,20 +101,52 @@ def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_
   ).execute()
 
 
-def draw_centered(draw, text, font, y, image_width, font_color="white"):
-  bbox = draw.textbbox((0, 0), text, font=font)
-  width = bbox[2] - bbox[0]
+def wrap_text(draw, text, font, max_width):
+  words = text.split()
+  lines = []
+  current = ""
 
-  x = (image_width - width) // 2
+  for word in words:
+    test = word if current == "" else current + " " + word
 
-  draw.text(
-    (x, y),
-    text,
-    font=font,
-    fill=font_color,
-    stroke_width=8,
-    stroke_fill="black"
-  )
+    bbox = draw.textbbox((0, 0), test, font=font)
+    width = bbox[2] - bbox[0]
+
+    if width <= max_width:
+      current = test
+    else:
+      if current:
+        lines.append(current)
+      current = word
+
+  if current:
+    lines.append(current)
+
+  return lines
+
+def draw_centered(draw, text, font, y, image_width, font_color="white", max_width=None, line_spacing=0):
+  if max_width is None:
+    max_width = image_width
+
+  lines = wrap_text(draw, text, font, max_width)
+
+  ascent, descent = font.getmetrics()
+  line_height = ascent + descent + line_spacing
+
+  for i, line in enumerate(lines):
+    bbox = draw.textbbox((0, 0), line, font=font)
+    width = bbox[2] - bbox[0]
+
+    x = (image_width - width) // 2
+
+    draw.text(
+      (x, y + i * line_height),
+      line,
+      font=font,
+      fill=font_color,
+      stroke_width=8,
+      stroke_fill="black"
+    )
 
 
 def create_thumbnail(song, artist):
@@ -124,23 +156,25 @@ def create_thumbnail(song, artist):
   img = Image.open("data/assets/thumbnail.png")
   draw = ImageDraw.Draw(img)
 
-  font_artist = ImageFont.truetype(
-    "data/assets/fonts/Sweet Cucumber Mocktail.ttf", 250
-  )
   font_song = ImageFont.truetype(
     "data/assets/fonts/Sweet Cucumber Mocktail.ttf", 200
   )
+
+  font_artist = ImageFont.truetype(
+    "data/assets/fonts/Sweet Cucumber Mocktail.ttf", 190
+  )
+
   font_subtitle = ImageFont.truetype(
     "data/assets/fonts/Sweet Cucumber Mocktail.ttf", 75
   )
 
-  draw_centered(draw, song, font_song, 150, img.width, font_color="#7abaff")
-  draw_centered(draw, artist, font_artist, 325, img.width)
-  draw_centered(draw, "Karaoke Version", font_subtitle, 600, img.width, font_color="#8a8a8a")
+  draw_centered(draw, song, font_song, 50, img.width, font_color="#7abaff")
+  draw_centered(draw, artist, font_artist, 450, img.width)
+  draw_centered(draw, "Karaoke Version", font_subtitle, 670, img.width, font_color="#8a8a8a")
 
-  img.save(output_dir / "thumbnail.png", quality=100)
+  img.save(output_dir / f"{song} - {artist} thumbnail.png", quality=100)
 
-  return(str(output_dir / "thumbnail.png"))
+  return str(output_dir / f"{song} - {artist} thumbnail.png")
 
 
 def main():
