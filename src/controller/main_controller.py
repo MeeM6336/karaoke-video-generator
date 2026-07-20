@@ -1,12 +1,14 @@
 from PySide6.QtCore import QProcess
 from pathlib import Path
 import sys
+import re
 
 class MainController:
 
     def __init__(self, window):
         self.window = window
         self.current_page = 0
+        self.job_type = None
 
         self.process = QProcess()
 
@@ -16,6 +18,7 @@ class MainController:
 
 
     def start_karaoke_job(self):
+        self.job_type = "create"
         job = self.window.create_widget.get_job()
 
         cmd = ["-m", "src.cli.karaoke_cli"]
@@ -45,10 +48,9 @@ class MainController:
             cmd
         )
 
-        #self.window.create_widget.taskbar.set_progress(10)
-
 
     def start_convert_job(self):
+        self.job_type = "convert"
         job = self.window.convert_widget.get_job()
 
         cmd = ["-m",  "src.cli.convert_cli","--yt_link", job["yt_link"], "--output_dir", job["output_dir"]]
@@ -66,6 +68,7 @@ class MainController:
 
     
     def start_upload_job(self):
+        self.job_type = "upload"
         job = self.window.upload_widget.get_job()
 
         cmd = ["-m",  "src.cli.upload_cli", "--video_path", job["file_path"], "--title", job["title"], "--tags", job["tags"], "--artist", job["artist"], "--song", job["song"]]
@@ -80,6 +83,7 @@ class MainController:
 
 
     def start_edit_job(self):
+        self.job_type = "edit"
         job = self.window.edit_widget.get_job()
 
         file_path = f"{job["output_dir"]}/{job["filename"]}.mp4"
@@ -105,7 +109,14 @@ class MainController:
         if text:
             print("STDOUT:")
             print(text)
+            
+            if self.job_type == "convert":
+                match = re.search(r'(\d+(?:\.\d+)?)%', text)
 
+                if match:
+                    self.window.convert_widget.task_bar.set_progress(int(float(match.group(1))))
+            if self.job_type == "edit":
+                match = re.search(r'(\d+(?:\.\d+)?)%', text)
 
     def read_stderr(self):
         text = bytes(

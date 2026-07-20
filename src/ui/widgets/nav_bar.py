@@ -11,7 +11,7 @@ class NavBar(QWidget):
 
         layout = QVBoxLayout(self)
         layout.setAlignment(Qt.AlignTop | Qt.AlignLeft)
-        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setContentsMargins(0, 40, 0, 0)
 
         self.create_button = NavBarButton("Create", 0, "data/assets/icons/create.png")
 

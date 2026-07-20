@@ -39,6 +39,14 @@ class TaskBar(QWidget):
                 background-color: #b0b0b0;
                 color: #ffffff;
             }
+
+            QPushButton:hover {
+				background-color: #5ba1f0;
+			}
+
+			QPushButton:pressed {
+				background-color: #3a7fcf;
+			}
         """
         
         self.setStyleSheet(start_button_style)

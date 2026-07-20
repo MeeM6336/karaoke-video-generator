@@ -12,7 +12,7 @@ class NavBarButton(QWidget):
 		self.page_num = page_num
 
 		layout = QHBoxLayout(self)
-		layout.setContentsMargins(80, 20, 100, 20)
+		layout.setContentsMargins(80, 30, 100, 30)
 		layout.setSpacing(30)
 		layout.setAlignment(Qt.AlignLeft)
 
