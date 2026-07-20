@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QCheckBox
 from PySide6.QtCore import Qt
 from src.ui.components.task_bar import TaskBar
 from src.ui.components.file_upload import FileUpload
@@ -16,20 +16,21 @@ class Upload(QWidget):
 
         layout_style = """
             QWidget#UploadWidget {
-                background-color: #f0f0f0;
+                background-color: #2b2a33;
             }
 
             QLineEdit {
                 padding: 10px;
                 font-size: 14px;
-                background-color: #ffffff;
-                color: #000000;
+                background-color: #42414d;
+                color: #ffffff;
             }
-                           
-            QLineEdit:read-only {
-                background-color: #f5f5f5;
-                color: #000000;
-            }
+
+            QCheckBox {
+				color: #ffffff;
+				font-size: 14px;
+				spacing: 8px;
+			}
             
             QPushButton {
                 background-color: #4a90e2;
@@ -56,22 +57,30 @@ class Upload(QWidget):
         layout.setSpacing(50)
         layout.setContentsMargins(50, 50, 50, 0)
 
-        self.file_upload = FileUpload("Video", "Select a file to upload", set_read_only=True)
+        self.file_upload = FileUpload("Video", "Select a file to upload")
+        self.file_upload.file_path.setClearButtonEnabled(True)
 
         self.title = QLineEdit()
         self.title.setPlaceholderText("Title")
+        self.title.setClearButtonEnabled(True)
 
         self.tags = QLineEdit()
         self.tags.setPlaceholderText("Tags")
+        self.tags.setClearButtonEnabled(True)
 
         self.artist = QLineEdit()
         self.artist.setPlaceholderText("Artist")
+        self.artist.setClearButtonEnabled(True)
 
         self.song = QLineEdit()
         self.song.setPlaceholderText("Song")
+        self.song.setClearButtonEnabled(True)
+
+        self.thumbnail_check = QCheckBox()
+        self.thumbnail_check.setText("Generate thumbnail for video")
 
         self.task_bar = TaskBar()
-        self.task_bar.setContentsMargins(0, 296, 0, 0)
+        self.task_bar.setContentsMargins(0, 227, 0, 0)
 
 
         layout.addWidget(self.file_upload)
@@ -79,6 +88,7 @@ class Upload(QWidget):
         layout.addWidget(self.tags)
         layout.addWidget(self.artist)
         layout.addWidget(self.song)
+        layout.addWidget(self.thumbnail_check)
         layout.addWidget(self.task_bar)
 
         self.file_upload.path_changed.connect(self._update_valid_start)
@@ -116,6 +126,10 @@ class Upload(QWidget):
 
     def get_song(self):
         return self.song.text()
+    
+
+    def get_thumbnail_check(self):
+        return self.thumbnail_check.isChecked()
 
 
     def get_job(self):
@@ -124,5 +138,6 @@ class Upload(QWidget):
             "title": self.get_title(),
             "tags": self.get_tags(),
             "artist": self.get_artist(),
-            "song": self.get_song()
+            "song": self.get_song(),
+            "thumbnail": self.get_thumbnail_check()
         }

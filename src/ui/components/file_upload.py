@@ -4,7 +4,7 @@ from PySide6.QtCore import Qt, Signal
 class FileUpload(QWidget):
     path_changed = Signal(str)
     
-    def __init__(self, file_type, placeholder_text="Select a file", set_read_only=True):
+    def __init__(self, file_type, placeholder_text="Select a file", set_read_only=False):
         super().__init__()
 
         layout = QHBoxLayout(self)

@@ -24,14 +24,14 @@ class Create(QWidget):
         # Layout Style
         layout_style = """
             QWidget#CreateWidget {
-                background-color: #f0f0f0;
+                background-color: #2b2a33;
             }
 
             QLineEdit {
                 padding: 10px;
                 font-size: 14px;
-                background-color: #ffffff;
-                color: #000000;
+                color: #ffffff;
+                background-color: #42414d;
             }
                            
             QLineEdit:read-only {
@@ -61,19 +61,27 @@ class Create(QWidget):
         self.youtube_url = QLineEdit()
         self.youtube_url.setPlaceholderText("YouTube Video URL")
         self.youtube_url.textEdited.connect(self.validate_url)
+        self.youtube_url.setClearButtonEnabled(True)
 
         self.font_color = QLineEdit()
         self.font_color.setPlaceholderText("Font Color (e.g., #00FFFF)")
+        self.font_color.setClearButtonEnabled(True)
 
         self.filename = QLineEdit()
         self.filename.setPlaceholderText("Output Filename")
+        self.filename.setClearButtonEnabled(True)
 
         self.song_lyric_query = QLineEdit()
         self.song_lyric_query.setPlaceholderText("Song name and artist to search for song lyrics")
+        self.song_lyric_query.setClearButtonEnabled(True)
 
-        self.audio_upload = FileUpload("Audio", "Select an audio file", set_read_only=True)
-        self.video_upload = FileUpload("Video", "Select a background video file", set_read_only=True)
-        self.output_upload = FileUpload("Output", "Select a folder to output video", set_read_only=True)
+        self.audio_upload = FileUpload("Audio", "Select an audio file")
+        self.audio_upload.file_path.setClearButtonEnabled(True)
+        self.video_upload = FileUpload("Video", "Select a background video file")
+        self.video_upload.file_path.setClearButtonEnabled(True)
+        self.output_upload = FileUpload("Output", "Select a folder to output video")
+        self.output_upload.file_path.setClearButtonEnabled(True)
+
         self.taskbar = TaskBar()
         self.taskbar.setContentsMargins(0, 106, 0, 0)
 

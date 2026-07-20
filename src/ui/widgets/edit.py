@@ -20,19 +20,14 @@ class Edit(QWidget):
 
 		layout_style = """
 			QWidget#EditWidget {
-				background-color: #f0f0f0;
+				background-color: #2b2a33;
 			}
 
 			QLineEdit {
 				padding: 8px;
 				font-size: 12px;
-				background-color: #ffffff;
-				color: #000000;
-			}
-							
-			QLineEdit:read-only {
-				background-color: #f5f5f5;
-				color: #000000;
+				background-color: #42414d;
+				color: #ffffff;
 			}
 			
 			QPushButton {
@@ -55,11 +50,11 @@ class Edit(QWidget):
 
 			QLabel {
 				font-size: 24px;
-				color: #000000;
+				color: #ffffff;
 			}
 
 			QCheckBox {
-				color: #000000;
+				color: #ffffff;
 				font-size: 14px;
 				spacing: 8px;
 			}
@@ -93,9 +88,11 @@ class Edit(QWidget):
 		layout.setContentsMargins(50, 50, 50, 0)
 		layout.setSpacing(12)
 
-		self.input_path = FileUpload("Video", "Select a video to edit", set_read_only=True)
-		self.output_path = FileUpload("Output", "Select a folder to output video", set_read_only=True)
+		self.input_path = FileUpload("Video", "Select a video to edit")
+		self.output_path = FileUpload("Output", "Select a folder to output video")
+		self.output_path.file_path.setClearButtonEnabled(True)
 		self.filename = QLineEdit()
+		self.filename.setClearButtonEnabled(True)
 		self.filename.setPlaceholderText("Output Filename")
 
 		# Video Container
@@ -119,6 +116,7 @@ class Edit(QWidget):
 
 		self.slider = QRangeSlider(Qt.Horizontal)
 		self.slider.setTickPosition(QSlider.TicksAbove)
+		self.slider.setTickInterval(30)
 		self.slider.setRange(0, 3000)
 		self.slider.setValue((0, 1500, 3000))
 		self._last_values = self.slider.value()
@@ -199,6 +197,7 @@ class Edit(QWidget):
 	def _update_slider_range(self, duration):
 		self.slider.setRange(0, duration)
 		self.slider.setValue((0, int(duration/2), duration))
+		self.slider.setTickInterval(duration/100)
 
 
 	def _update_handle_position(self, position):

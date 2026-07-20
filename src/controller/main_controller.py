@@ -70,6 +70,9 @@ class MainController:
 
         cmd = ["-m",  "src.cli.upload_cli", "--video_path", job["file_path"], "--title", job["title"], "--tags", job["tags"], "--artist", job["artist"], "--song", job["song"]]
 
+        if job["thumbnail"]:
+            cmd.append("--thumbnail")
+
         self.process.start(
             sys.executable,
             cmd

@@ -18,19 +18,14 @@ class Convert(QWidget):
         # Layout Style
         layout_style = """
             QWidget#ConvertWidget {
-                background-color: #f0f0f0;
+                background-color: #2b2a33;
             }
 
             QLineEdit {
                 padding: 10px;
                 font-size: 14px;
-                background-color: #ffffff;
-                color: #000000;
-            }
-                           
-            QLineEdit:read-only {
-                background-color: #f5f5f5;
-                color: #000000;
+                background-color: #42414d;
+                color: #ffffff;
             }
             
             QPushButton {
@@ -51,7 +46,7 @@ class Convert(QWidget):
 			}
 
             QCheckBox {
-                color: #000000;
+                color: #ffffff;
                 font-size: 16px;
                 spacing: 8px;
             }
@@ -71,9 +66,11 @@ class Convert(QWidget):
 
         self.youtube_url = QLineEdit()
         self.youtube_url.setPlaceholderText("YouTube Video URL")
+        self.youtube_url.setClearButtonEnabled(True)
         self.youtube_url.textEdited.connect(self.validate_url)
 
-        self.output_upload = FileUpload("Output", "Select a folder to output video", set_read_only=True)
+        self.output_upload = FileUpload("Output", "Select a folder to output video")
+        self.output_upload.file_path.setClearButtonEnabled(True)
 
         checkbox_layout = QHBoxLayout()
         checkbox_layout.setAlignment(Qt.AlignLeft)

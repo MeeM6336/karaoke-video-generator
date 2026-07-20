@@ -9,6 +9,7 @@ def convert_yt(download_type, url, output_dir):
 
     ydl_opts = {
         "outtmpl": output_template,
+        "cookiesfrombrowser": ("firefox",),
         "js_runtimes": {
             "node": {}
         },
