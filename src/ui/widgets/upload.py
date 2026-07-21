@@ -80,7 +80,7 @@ class Upload(QWidget):
         self.thumbnail_check.setText("Generate thumbnail for video")
 
         self.task_bar = TaskBar()
-        self.task_bar.setContentsMargins(0, 227, 0, 0)
+        self.task_bar.setContentsMargins(0, 257, 0, 0)
 
 
         layout.addWidget(self.file_upload)

@@ -83,7 +83,7 @@ class Create(QWidget):
         self.output_upload.file_path.setClearButtonEnabled(True)
 
         self.task_bar = TaskBar()
-        self.task_bar.setContentsMargins(0, 106, 0, 0)
+        self.task_bar.setContentsMargins(0, 136, 0, 0)
 
         layout.addWidget(self.youtube_url)
         layout.addWidget(self.audio_upload)

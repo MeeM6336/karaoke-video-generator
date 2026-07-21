@@ -20,12 +20,13 @@ class MainController:
     def start_karaoke_job(self):
         self.job_type = "create"
         job = self.window.create_widget.get_job()
+        missing = []
 
         cmd = ["-m", "src.cli.karaoke_cli"]
 
         if job["yt_link"]:
             cmd.extend(["--yt_link", job["yt_link"]])
-
+        
         if job["audio_file"]:
             cmd.extend(["--audio_file", job["audio_file"]])
 

@@ -72,10 +72,14 @@ class Convert(QWidget):
         self.output_upload = FileUpload("Output", "Select a folder to output video")
         self.output_upload.file_path.setClearButtonEnabled(True)
 
+        self.filename = QLineEdit()
+        self.filename.setPlaceholderText("Choose a file name")
+        self.filename.setClearButtonEnabled(True)
+
         checkbox_layout = QHBoxLayout()
         checkbox_layout.setAlignment(Qt.AlignLeft)
         checkbox_layout.setSpacing(20)
-        checkbox_layout.setContentsMargins(10, 10, 50, 300)
+        checkbox_layout.setContentsMargins(10, 10, 50, 0)
 
         self.video_checkbox = QCheckBox()
         self.video_checkbox.setText("Download Video")
@@ -84,13 +88,14 @@ class Convert(QWidget):
         self.audio_checkbox.setText("Download Audio")
 
         self.task_bar = TaskBar()
-        self.task_bar.setContentsMargins(0, 200, 0, 0)
+        self.task_bar.setContentsMargins(0, 435, 0, 0)
 
         checkbox_layout.addWidget(self.video_checkbox)
         checkbox_layout.addWidget(self.audio_checkbox)
 
         layout.addWidget(self.youtube_url)
         layout.addWidget(self.output_upload)
+        layout.addWidget(self.filename)
         layout.addLayout(checkbox_layout)
         layout.addWidget(self.task_bar)
 
@@ -120,7 +125,7 @@ class Convert(QWidget):
 
     def _update_valid_start(self):
         if self.valid_url and (self.get_video_check() or self.get_audio_check()):
-            self.task_bar.set_valid_start(True)
+            self.task_bar.set_valid_start()
             
 
     def get_video_check(self):

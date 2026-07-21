@@ -140,7 +140,7 @@ class Edit(QWidget):
 
 		# Taskbar
 		self.task_bar = TaskBar()
-		self.task_bar.setContentsMargins(0, 0, 0, 0)
+		self.task_bar.setContentsMargins(0, 30, 0, 0)
 
 		# Layout Widgets
 		layout.addWidget(self.input_path)
