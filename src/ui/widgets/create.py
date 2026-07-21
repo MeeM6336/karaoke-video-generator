@@ -82,8 +82,8 @@ class Create(QWidget):
         self.output_upload = FileUpload("Output", "Select a folder to output video")
         self.output_upload.file_path.setClearButtonEnabled(True)
 
-        self.taskbar = TaskBar()
-        self.taskbar.setContentsMargins(0, 106, 0, 0)
+        self.task_bar = TaskBar()
+        self.task_bar.setContentsMargins(0, 106, 0, 0)
 
         layout.addWidget(self.youtube_url)
         layout.addWidget(self.audio_upload)
@@ -92,7 +92,7 @@ class Create(QWidget):
         layout.addWidget(self.filename)
         layout.addWidget(self.font_color)
         layout.addWidget(self.song_lyric_query)
-        layout.addWidget(self.taskbar)
+        layout.addWidget(self.task_bar)
 
         self.setLayout(layout)
 
@@ -116,10 +116,10 @@ class Create(QWidget):
 
     def _update_valid_start(self):
         if self.valid_url or (self.get_audio_path() and self.get_video_path()):
-            self.taskbar.set_valid_start(True)
+            self.task_bar.set_valid_start(True)
         
         else:
-            self.taskbar.set_valid_start(False)
+            self.task_bar.set_valid_start(False)
 
     def get_audio_path(self):
         return self.audio_upload.get_path()

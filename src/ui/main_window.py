@@ -33,7 +33,7 @@ class MainWindow(QMainWindow):
         main_layout.addLayout(self.stacked_layout, 4)
 
         self.create_widget = Create()
-        self.create_widget.taskbar.start_clicked.connect(
+        self.create_widget.task_bar.start_clicked.connect(
             self.controller.start_karaoke_job
         )
 

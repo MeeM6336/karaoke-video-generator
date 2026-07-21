@@ -119,6 +119,8 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   if segments is not None:
     segments_path = to_json("segments", temp_dir, segments)
 
+  print("[PROGRESS] - 10%", flush=True)
+
   result = subprocess.run(
     [
       r"demucs_venv\Scripts\python.exe",
@@ -133,6 +135,9 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   )
 
   vocal_path = result.stdout.strip()
+
+  print("[PROGRESS] - 50%", flush=True)
+
   cmd = [
     r"whisper_venv\Scripts\python.exe",
     "-m"
@@ -149,8 +154,12 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
 
   result = subprocess.run(
     cmd,
-    check=True
+    check=True,
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL
   )
+
+  print("[PROGRESS] - 60%", flush=True)
 
   # Generate .ass file
   aligned_dir = temp_dir / "aligned_segments.json"
@@ -173,8 +182,12 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
 
   result = subprocess.run(
     cmd,
-    check=True
+    check=True,
+    stdout=subprocess.DEVNULL,
+    stderr=subprocess.DEVNULL
   )
+
+  print("[PROGRESS] - 80%", flush=True)
 
   filters = (
     "equalizer=f=1500:t=q:w=1.2:g=-2,"
@@ -186,6 +199,10 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   # Create video
   cmd = [
     "ffmpeg",
+
+    "-loglevel", "error",
+
+    "-hide_banner",
 
     "-y",
 
@@ -216,5 +233,3 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   ]
 
   subprocess.run(cmd, check=True)
-
-  print(f"Output video saved to: {output_path}")

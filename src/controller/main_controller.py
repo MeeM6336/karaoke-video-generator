@@ -107,16 +107,8 @@ class MainController:
         ).decode(errors="replace")
 
         if text:
-            print("STDOUT:")
-            print(text)
-            
-            if self.job_type == "convert":
-                match = re.search(r'(\d+(?:\.\d+)?)%', text)
+            self.set_progress(text=text)
 
-                if match:
-                    self.window.convert_widget.task_bar.set_progress(int(float(match.group(1))))
-            if self.job_type == "edit":
-                match = re.search(r'(\d+(?:\.\d+)?)%', text)
 
     def read_stderr(self):
         text = bytes(
@@ -130,3 +122,34 @@ class MainController:
 
     def process_finished(self, exit_code, exit_status):
         print(f"Finished with exit code {exit_code}")
+        self.set_progress(progress=100)
+
+
+    def set_progress(self, text=None, progress=None):
+        if self.job_type == "create":
+            if text is not None:
+                match = re.search(r"\[PROGRESS\]\s*-\s*(\d+(?:\.\d+)?)%", text)
+
+                if match:
+                    self.window.create_widget.task_bar.set_progress(int(float(match.group(1))))
+            
+            if progress == 100:
+                self.window.create_widget.task_bar.set_progress(100)
+
+        if self.job_type == "upload":
+            if text is not None:
+                match = re.search(r"\[PROGRESS\]\s*-\s*(\d+(?:\.\d+)?)%", text)
+
+                if match:
+                    self.window.upload_widget.task_bar.set_progress(int(float(match.group(1))))
+
+        if self.job_type == "convert":
+            if text is not None:
+                match = re.search(r'(\d+(?:\.\d+)?)%', text)
+
+                if match:
+                    self.window.convert_widget.task_bar.set_progress(int(float(match.group(1))))
+
+        if self.job_type == "edit":
+            if progress == 100:
+                self.window.edit_widget.task_bar.set_progress(100)

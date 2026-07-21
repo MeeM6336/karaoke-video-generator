@@ -74,7 +74,7 @@ def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_
     }
   }
 
-  media_file = MediaFileUpload(video_file, chunksize=-1, resumable=True)
+  media_file = MediaFileUpload(video_file, chunksize=(16 * 1024 * 1024), resumable=True)
 
   request = youtube.videos().insert(
     part="snippet,status",
@@ -85,11 +85,13 @@ def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_
   response = None
 
   while response is None:
-    print("Uploading file...")
     status, response = request.next_chunk()
-    if response is not None:
-      if 'id' in response:
-        print(f"Video id '{response['id']}' was successfully uploaded.")
+    if status:
+      progress = int(status.progress() * 100)
+      print(f"[PROGRESS] - {progress}%", flush=True)
+      
+    if 'id' in response:
+      print(f"Video id '{response['id']}' was successfully uploaded.")
   
   video_id = response["id"]
 
