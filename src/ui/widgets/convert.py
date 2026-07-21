@@ -125,7 +125,7 @@ class Convert(QWidget):
 
     def _update_valid_start(self):
         if self.valid_url and (self.get_video_check() or self.get_audio_check()):
-            self.task_bar.set_valid_start()
+            self.task_bar.set_valid_start(True)
             
 
     def get_video_check(self):
