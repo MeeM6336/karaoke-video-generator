@@ -86,12 +86,16 @@ def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_
 
   while response is None:
     status, response = request.next_chunk()
+
     if status:
       progress = int(status.progress() * 100)
       print(f"[PROGRESS] - {progress}%", flush=True)
       
-    if 'id' in response:
-      print(f"Video id '{response['id']}' was successfully uploaded.")
+  if 'id' in response:
+    print(f"Video id '{response['id']}' was successfully uploaded.")
+
+  else:
+    raise RuntimeError("Upload completed but no video ID was returned.")
   
   video_id = response["id"]
 
@@ -103,6 +107,8 @@ def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_
         mimetype="image/png"
       )
     ).execute()
+
+  print(f"[PROGRESS] - 100%", flush=True)
 
 
 def wrap_text(draw, text, font, max_width):

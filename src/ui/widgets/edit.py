@@ -167,8 +167,6 @@ class Edit(QWidget):
 		self.slider.sliderPressed.connect(lambda: setattr(self, "_dragging", True))
 		self.slider.sliderReleased.connect(lambda: setattr(self, "_dragging", False))
 
-		self.crop_check.stateChanged.connect(self._update_valid_start)
-
 
 	def load_video(self, path):
 		self.media_player.setSource(QUrl.fromLocalFile(path))
@@ -209,11 +207,6 @@ class Edit(QWidget):
 		self.slider.blockSignals(True)
 		self.slider.setValue(tuple(values))
 		self.slider.blockSignals(False)
-		
-
-	def _update_valid_start(self):
-		if self.get_crop_check() and self.get_output_dir() and self.get_output_filename():
-			self.task_bar.set_valid_start(True)
 
 
 	def get_crop_check(self):

@@ -3,9 +3,9 @@ import argparse
 import yt_dlp
 
 
-def convert_yt(download_type, url, output_dir):
+def convert_yt(download_type, url, output_dir, filename="%(title)s"):
     output_dir = Path(output_dir)
-    output_template = str(output_dir / "%(title)s.%(ext)s")
+    output_template = str(output_dir / f"{filename}.%(ext)s")
 
     ydl_opts = {
         "outtmpl": output_template,
@@ -66,15 +66,22 @@ def main():
         help="Output file path"
     )
 
+    parser.add_argument(
+        "--filename",
+        type=str,
+        required=False,
+        help="Output file name"
+    )
+
     args = parser.parse_args()
 
     if args.audio:
         print("Converting to audio...")
-        convert_yt("audio", args.yt_link, args.output_dir)
+        convert_yt("audio", args.yt_link, args.output_dir, args.filename)
 
     elif args.video:
         print("Converting to video...")
-        convert_yt("video", args.yt_link, args.output_dir)
+        convert_yt("video", args.yt_link, args.output_dir, args.filename)
 
 if __name__ == "__main__":
     main()

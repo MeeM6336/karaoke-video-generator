@@ -60,7 +60,6 @@ class Create(QWidget):
 
         self.youtube_url = QLineEdit()
         self.youtube_url.setPlaceholderText("YouTube Video URL")
-        self.youtube_url.textEdited.connect(self.validate_url)
         self.youtube_url.setClearButtonEnabled(True)
 
         self.font_color = QLineEdit()
@@ -96,39 +95,18 @@ class Create(QWidget):
 
         self.setLayout(layout)
 
-        self.audio_upload.path_changed.connect(self._update_valid_start)
-        self.video_upload.path_changed.connect(self._update_valid_start)
-        self.output_upload.path_changed.connect(self._update_valid_start)
-
-    def validate_url(self, text):
-        valid_urls = (
-            "https://youtu.be/",
-            "https://www.youtube.com/",
-            "www.youtube.com/",
-            "www.youtu.be/",
-            "youtu.be/",
-            "youtube.com/"
-        )
-
-        self.valid_url = text.startswith(valid_urls)
-        self._update_valid_start()
-
-
-    def _update_valid_start(self):
-        if self.valid_url or (self.get_audio_path() and self.get_video_path()):
-            self.task_bar.set_valid_start(True)
-        
-        else:
-            self.task_bar.set_valid_start(False)
 
     def get_audio_path(self):
         return self.audio_upload.get_path()
 
+
     def get_video_path(self):
         return self.video_upload.get_path()
 
+
     def get_output_path(self):
         return self.output_upload.get_path()
+
     
     def get_job(self):
         return {

@@ -91,21 +91,7 @@ class Upload(QWidget):
         layout.addWidget(self.thumbnail_check)
         layout.addWidget(self.task_bar)
 
-        self.file_upload.path_changed.connect(self._update_valid_start)
-        self.title.textChanged.connect(self._update_valid_start)
-        self.tags.textChanged.connect(self._update_valid_start)
-        self.artist.textChanged.connect(self._update_valid_start)
-        self.song.textChanged.connect(self._update_valid_start)
-
         self.setLayout(layout)
-
-    
-    def _update_valid_start(self):
-        if self.get_file_path() and self.get_title() and self.get_tags() and self.get_artist() and self.get_song():
-            self.task_bar.set_valid_start(True)
-        
-        else:
-            self.task_bar.set_valid_start(False)
 
 
     def get_file_path(self):

@@ -21,9 +21,8 @@ class TaskBar(QWidget):
 
         self.start_button = QPushButton("Start")
         self.start_button.clicked.connect(
-            lambda: self.start_clicked.emit(1) if self.valid_start else self.start_clicked.emit(0)
+            lambda: self.start_clicked.emit(1)
         )
-        self.start_button.setEnabled(False)
 
         start_button_style = """
             QPushButton {
@@ -33,11 +32,6 @@ class TaskBar(QWidget):
                 border-radius: 4px;
                 padding: 6px 15px;
                 font-weight: bold;
-            }
-
-            QPushButton:disabled {
-                background-color: #b0b0b0;
-                color: #ffffff;
             }
 
             QPushButton:hover {
@@ -65,10 +59,6 @@ class TaskBar(QWidget):
         layout.addWidget(self.progress_bar)
         layout.addWidget(self.start_button)
         self.setLayout(layout)
-
-
-    def set_valid_start(self):
-        self.valid_start = True
 
     
     def set_progress(self, progress):

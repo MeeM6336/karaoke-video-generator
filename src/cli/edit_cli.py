@@ -8,6 +8,7 @@ def crop_video(input_path, output_path, start_ms, end_ms):
 
     subprocess.run([
         "ffmpeg",
+        "-y",
         "-ss", str(start),
         "-to", str(end),
         "-i", input_path,

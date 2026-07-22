@@ -67,7 +67,6 @@ class Convert(QWidget):
         self.youtube_url = QLineEdit()
         self.youtube_url.setPlaceholderText("YouTube Video URL")
         self.youtube_url.setClearButtonEnabled(True)
-        self.youtube_url.textEdited.connect(self.validate_url)
 
         self.output_upload = FileUpload("Output", "Select a folder to output video")
         self.output_upload.file_path.setClearButtonEnabled(True)
@@ -99,33 +98,7 @@ class Convert(QWidget):
         layout.addLayout(checkbox_layout)
         layout.addWidget(self.task_bar)
 
-        self.video_checkbox.toggled.connect(self._on_check_change)
-        self.audio_checkbox.toggled.connect(self._on_check_change)
-
         self.setLayout(layout)
-        
-
-    def validate_url(self, text):
-        valid_urls = (
-            "https://youtu.be/",
-            "https://www.youtube.com/",
-            "www.youtube.com/",
-            "www.youtu.be/",
-            "youtu.be/",
-            "youtube.com/"
-        )
-
-        self.valid_url = text.startswith(valid_urls)
-        self._update_valid_start()
-
-
-    def _on_check_change(self):
-        self._update_valid_start()
-
-
-    def _update_valid_start(self):
-        if self.valid_url and (self.get_video_check() or self.get_audio_check()):
-            self.task_bar.set_valid_start(True)
             
 
     def get_video_check(self):
@@ -139,13 +112,17 @@ class Convert(QWidget):
     def get_output_path(self):
         return self.output_upload.get_path()
 
+    def get_filename(self):
+        return self.filename.text()
+
 
     def get_job(self):
         return {
             "yt_link": self.youtube_url.text(),
             "video": self.get_video_check(),
             "audio": self.get_audio_check(),
-            "output_dir": self.get_output_path()
+            "output_dir": self.get_output_path(),
+            "filename": self.get_filename()
         }
 
         

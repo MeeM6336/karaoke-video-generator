@@ -1,5 +1,7 @@
 from PySide6.QtCore import QProcess
+from PySide6.QtWidgets import QDialog
 from pathlib import Path
+from src.ui.components.missing_dialog import MissingDialog
 import sys
 import re
 
@@ -17,16 +19,47 @@ class MainController:
         self.process.finished.connect(self.process_finished)
 
 
+    def missing_dialog(self, missing):
+        dialog = MissingDialog(missing)
+
+        dialog.exec()
+
+
+    def validate_url(self, text):
+        valid_urls = (
+            "https://youtu.be/",
+            "https://www.youtube.com/",
+            "www.youtube.com/",
+            "www.youtu.be/",
+            "youtu.be/",
+            "youtube.com/"
+        )
+
+        return text.startswith(valid_urls)
+
+
     def start_karaoke_job(self):
         self.job_type = "create"
+
         job = self.window.create_widget.get_job()
         missing = []
+
+        # Input validation
+        if not job["yt_link"] and (not job["audio_file"] or not job["video_file"]):
+            missing.append("YouTube link or both audio file and video file")
+
+        if job["yt_link"] and not self.validate_url(job["yt_link"]):
+            missing.append("Valid YouTube link")
+
+        if missing:
+            self.missing_dialog(missing)
+            return
 
         cmd = ["-m", "src.cli.karaoke_cli"]
 
         if job["yt_link"]:
             cmd.extend(["--yt_link", job["yt_link"]])
-        
+
         if job["audio_file"]:
             cmd.extend(["--audio_file", job["audio_file"]])
 
@@ -34,67 +67,146 @@ class MainController:
             cmd.extend(["--video_file", job["video_file"]])
 
         if job["output_dir"] and job["filename"]:
-            file_path = f"{job["output_dir"]}/{job["filename"]}.mp4"
-
-            cmd.extend(["--output_file", file_path])
+            output_path = Path(job["output_dir"]) / f"{job['filename']}.mp4"
+            cmd.extend(["--output_file", str(output_path)])
 
         if job["font_color"]:
             cmd.extend(["--font_color", job["font_color"]])
 
         if job["query"]:
             cmd.extend(["--query", job["query"]])
-        
-        self.process.start(
-            sys.executable,
-            cmd
-        )
+
+        self.process.start(sys.executable, cmd)
 
 
     def start_convert_job(self):
         self.job_type = "convert"
-        job = self.window.convert_widget.get_job()
 
-        cmd = ["-m",  "src.cli.convert_cli","--yt_link", job["yt_link"], "--output_dir", job["output_dir"]]
+        job = self.window.convert_widget.get_job()
+        missing = []
+
+        if not job["yt_link"]:
+            missing.append("YouTube link")
+        elif not self.validate_url(job["yt_link"]):
+            missing.append("Valid YouTube link")
+
+        if not job["audio"] and not job["video"]:
+            missing.append("Audio and/or Video")
+
+        if missing:
+            self.missing_dialog(missing)
+            return
+
+        output_dir = job["output_dir"] or "output"
+        filename = job["filename"] or "output_vid"
+
+        cmd = [
+            "-m",
+            "src.cli.convert_cli",
+            "--yt_link",
+            job["yt_link"],
+            "--output_dir",
+            output_dir,
+            "--filename", 
+            filename
+        ]
 
         if job["audio"]:
             cmd.append("--audio")
-        
+
         if job["video"]:
             cmd.append("--video")
 
-        self.process.start(
-            sys.executable,
-            cmd
-        )
+        self.process.start(sys.executable, cmd)
 
     
     def start_upload_job(self):
         self.job_type = "upload"
-        job = self.window.upload_widget.get_job()
 
-        cmd = ["-m",  "src.cli.upload_cli", "--video_path", job["file_path"], "--title", job["title"], "--tags", job["tags"], "--artist", job["artist"], "--song", job["song"]]
+        job = self.window.upload_widget.get_job()
+        missing = []
+
+        if not job["file_path"]:
+            missing.append("Video")
+
+        if not job["title"]:
+            missing.append("Title")
+
+        if not job["tags"]:
+            missing.append("Tags")
+
+        if not job["artist"]:
+            missing.append("Artist")
+
+        if not job["song"]:
+            missing.append("Song")
+
+        if missing:
+            self.missing_dialog(missing)
+            return
+
+        cmd = [
+            "-m",
+            "src.cli.upload_cli",
+            "--video_path",
+            job["file_path"],
+            "--title",
+            job["title"],
+            "--tags",
+            job["tags"],
+            "--artist",
+            job["artist"],
+            "--song",
+            job["song"],
+        ]
 
         if job["thumbnail"]:
-            cmd.append("--thumbnail")
+            cmd.extend(["--thumbnail"])
 
-        self.process.start(
-            sys.executable,
-            cmd
-        )
+        self.process.start(sys.executable, cmd)
 
 
     def start_edit_job(self):
         self.job_type = "edit"
+
         job = self.window.edit_widget.get_job()
+        missing = []
 
-        file_path = f"{job["output_dir"]}/{job["filename"]}.mp4"
+        if not job["input_path"]:
+            missing.append("Input video")
 
-        cmd = ["-m", "src.cli.edit_cli", "--input_path", job["input_path"], "--output_path", file_path, "--crop", "--start", str(job["start"]), "--end", str(job["end"])]
+        if job["crop"]:
+            if job["start"] is None or job["end"] is None:
+                missing.append("Crop start/end times")
 
-        self.process.start(
-            sys.executable,
-            cmd
-        )
+        if missing:
+            self.missing_dialog(missing)
+            return
+
+        output_dir = job["output_dir"] or "output"
+        filename = job["filename"] or "edited_video"
+
+        output_path = Path(output_dir) / f"{filename}.mp4"
+
+        cmd = [
+            "-m",
+            "src.cli.edit_cli",
+            "--input_path",
+            job["input_path"],
+            "--output_path",
+            str(output_path),
+        ]
+
+        if job["crop"]:
+            cmd.extend([
+                "--crop",
+                "--start",
+                str(job["start"]),
+                "--end",
+                str(job["end"]),
+            ])
+
+        self.process.start(sys.executable, cmd)
 
 
     def change_page(self, index):
