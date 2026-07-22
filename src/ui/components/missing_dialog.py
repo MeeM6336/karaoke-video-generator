@@ -39,7 +39,7 @@ class MissingDialog(QDialog):
             }
         """)
 
-        self.setWindowIcon(QIcon("path/to/your/icon.png"))
+        self.setWindowIcon(QIcon("data/assets/icons/logo.png"))
 
         self.buttonBox = QDialogButtonBox(ok_btn)
         self.buttonBox.accepted.connect(self.accept)

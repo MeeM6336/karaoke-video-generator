@@ -1,5 +1,6 @@
 from PySide6.QtWidgets import QMainWindow, QHBoxLayout, QStackedLayout, QWidget
 from PySide6.QtCore import QSize
+from PySide6.QtGui import QIcon
 
 from src.ui.widgets.convert import Convert
 from src.ui.widgets.nav_bar import NavBar
@@ -16,7 +17,6 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Kirk Karaoke Dashboard")
         self.setFixedSize(QSize(1440, 900))
-        
 
         self.controller = MainController(self)
 
