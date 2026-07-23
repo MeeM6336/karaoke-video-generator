@@ -6,13 +6,12 @@ from src.ui.components.task_bar import TaskBar
 
 
 class Create(QWidget):
-    search_request = Signal(int)
+    search_request = Signal(str)
 
     def __init__(self):
         super().__init__()
 
-        # Validation Flags
-        self.valid_url = False
+        self.lrc_query = None
 
         self.setObjectName("CreateWidget")
 
@@ -77,7 +76,7 @@ class Create(QWidget):
         self.filename.setClearButtonEnabled(True)
 
         self.lyric_search_layout = QHBoxLayout()
-        self.font_color_layout.setContentsMargins(0, 0, 0, 0)
+        self.lyric_search_layout.setContentsMargins(0, 0, 0, 0)
         self.song_lyric_query = QLineEdit()
         self.song_lyric_query.setPlaceholderText("Song name and artist to search for song lyrics")
         self.song_lyric_query.setClearButtonEnabled(True)

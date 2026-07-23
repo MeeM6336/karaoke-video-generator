@@ -1,9 +1,12 @@
+import sys
+import re
+import requests
+
 from PySide6.QtCore import QProcess
 from PySide6.QtWidgets import QDialog
 from pathlib import Path
 from src.ui.components.missing_dialog import MissingDialog
-import sys
-import re
+from src.ui.components.lyrics_dialog import LyricsDialog
 
 class MainController:
 
@@ -26,6 +29,38 @@ class MainController:
         dialog = MissingDialog(missing)
 
         dialog.exec()
+
+
+    def search_lyrics(self, query):
+        headers = {
+            "User-Agent": "Mozilla/5.0"
+        }
+
+        try:
+            url = "https://lrclib.net/api/search"
+            params = {
+                "q": query
+            }
+            response = requests.get(url, params=params, headers=headers)
+            response.raise_for_status()
+
+            if response.status_code == 204:
+                print("No results found. Please try a different search.")
+                return
+
+            results = response.json()
+
+        except requests.exceptions.RequestException as e:
+            print(f"Error fetching data: {e}")
+            return
+
+        dialog = LyricsDialog(results)
+
+        if dialog.exec():
+            result = dialog.selected_result()
+            print(f"Recieved: {result["trackName"]}")
+        else:
+            return
 
 
     def validate_url(self, text):

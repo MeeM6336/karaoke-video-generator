@@ -18,39 +18,45 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Kirk Karaoke Dashboard")
         self.setFixedSize(QSize(1440, 900))
 
-        self.controller = MainController(self)
-
         main_layout = QHBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
         self.stacked_layout = QStackedLayout()
 
-        self.nav_bar = NavBar()
-        self.nav_bar.page_changed.connect(
-            self.controller.change_page
-        )
-
-        main_layout.addWidget(self.nav_bar, 1)
-        main_layout.addLayout(self.stacked_layout, 4)
-
         self.create_widget = Create()
+        
+        self.upload_widget = Upload()
+
+        self.edit_widget = Edit()
+
+        self.convert_widget = Convert()
+
+        self.nav_bar = NavBar()
+
+        self.controller = MainController(self)
+
         self.create_widget.task_bar.start_clicked.connect(
             self.controller.start_karaoke_job
         )
 
-        self.upload_widget = Upload()
         self.upload_widget.task_bar.start_clicked.connect(
             self.controller.start_upload_job
         )
 
-        self.edit_widget = Edit()
         self.edit_widget.task_bar.start_clicked.connect(
             self.controller.start_edit_job
         )
 
-        self.convert_widget = Convert()
         self.convert_widget.task_bar.start_clicked.connect(
             self.controller.start_convert_job
         )
+
+        self.nav_bar.page_changed.connect(
+            self.controller.change_page
+        )
+
+
+        main_layout.addWidget(self.nav_bar, 1)
+        main_layout.addLayout(self.stacked_layout, 4)
 
         self.stacked_layout.addWidget(self.create_widget)
         self.stacked_layout.addWidget(self.upload_widget)
