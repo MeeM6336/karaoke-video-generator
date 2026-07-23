@@ -14,6 +14,9 @@ class MainController:
 
         self.process = QProcess()
 
+        self.window.create_widget.search_request.connect(
+            self.search_lyrics
+        )
         self.process.readyReadStandardOutput.connect(self.read_stdout)
         self.process.readyReadStandardError.connect(self.read_stderr)
         self.process.finished.connect(self.process_finished)

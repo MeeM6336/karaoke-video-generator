@@ -11,7 +11,6 @@ class MissingDialog(QDialog):
 
         self.resize(200, 150)
 
-        # Apply QSS Styling directly to the dialog
         self.setStyleSheet("""
             QDialog {
                 background-color: #2b2a33;

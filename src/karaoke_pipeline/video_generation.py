@@ -35,9 +35,14 @@ def run_menu(query=None):
   if query is not None:
     results = get_lyrics(query)
 
-    segments = lrc_to_segments(results[0]['syncedLyrics'])
+    for result in results:
+      if result.get("syncedLyrics"):
+        segments = lrc_to_segments(result['syncedLyrics'])
+        track_name = result['trackName']
 
-    return segments, results[0]['trackName']
+        return segments, track_name
+
+    return None, None
 
   while True:
     print("Please search for the song to sync lyrics too, or (-1) to skip and use WhisperX transcription:")
@@ -190,9 +195,6 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   print("[PROGRESS] - 80%", flush=True)
 
   filters = (
-    "equalizer=f=1500:t=q:w=1.2:g=-2,"
-    "equalizer=f=2800:t=q:w=1.4:g=-2,"
-    "equalizer=f=4200:t=q:w=1.5:g=-2,"
     "loudnorm"
   )
 

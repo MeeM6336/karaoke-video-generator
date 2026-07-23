@@ -46,9 +46,9 @@ def authenticate_youtube():
 
 def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_path=None, tags=None):
   description = f"""
-    #Karaoke #Lyrics #Music #Karaokeversion
+    🎤 Go ahead and sing {song} by {artist} to your hearts desire! .
 
-    🎤 Want to request your favorite songs? Leave a comment below and just wait for your best karaoke night
+    ❓ Want to request your favorite songs? Leave a comment below and just wait for your best karaoke night
     
     🎵 Make sure to like & subscribe and hit the bell icon so you don't miss out on the latest songs
     
@@ -60,6 +60,8 @@ def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_
 
     Disclaimer:
     This karaoke/instrumental version was created for entertainment purposes. All rights to the original composition, lyrics, and master recording belong to their respective copyright owners.
+    
+    #Karaoke #Lyrics #{artist} #{song}
     """
 
   request_body = {
@@ -74,7 +76,7 @@ def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_
     }
   }
 
-  media_file = MediaFileUpload(video_file, chunksize=(16 * 1024 * 1024), resumable=True)
+  media_file = MediaFileUpload(video_file, chunksize=(32 * 1024 * 1024), resumable=True)
 
   request = youtube.videos().insert(
     part="snippet,status",
