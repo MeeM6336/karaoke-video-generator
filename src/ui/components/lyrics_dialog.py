@@ -45,9 +45,10 @@ class LyricsDialog(QDialog):
         self.preview_label.setText("Preview of lyrics:")
 
         self.list = QListWidget()
-        for result in query_results[:5]:
+        for result in query_results[:10]:
             if result.get("syncedLyrics"):
-                minutes, seconds = divmod(int(result["duration"]), 60)
+
+                minutes, seconds = divmod(int(result["duration"]), 60) if result.get("duration") else (0, 0)
 
                 item = QListWidgetItem(
                     f"{result["artistName"]} - {result["trackName"]} - ({minutes}:{seconds:02})"

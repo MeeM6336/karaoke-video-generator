@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QCheckBox, QLineEdit, QSlider
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QCheckBox, QLineEdit, QSlider, QLabel
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtMultimediaWidgets import QVideoWidget
 from PySide6.QtCore import Qt, QUrl, QSize
@@ -49,7 +49,7 @@ class Edit(QWidget):
 			}
 
 			QLabel {
-				font-size: 24px;
+				font-size: 12px;
 				color: #ffffff;
 			}
 
@@ -114,12 +114,22 @@ class Edit(QWidget):
 		control_layout = QHBoxLayout()
 		control_layout.setAlignment(Qt.AlignCenter)
 
+		# Slider 
+		self.slider_layout = QHBoxLayout()
+
+		self.start_time = QLabel()
+		self.start_time.setText("0:00")
+		self.end_time = QLabel()
+		self.end_time.setText("0:00")
 		self.slider = QRangeSlider(Qt.Horizontal)
 		self.slider.setTickPosition(QSlider.TicksAbove)
 		self.slider.setTickInterval(30)
 		self.slider.setRange(0, 3000)
 		self.slider.setValue((0, 1500, 3000))
 		self._last_values = self.slider.value()
+		self.slider_layout.addWidget(self.start_time)
+		self.slider_layout.addWidget(self.slider)
+		self.slider_layout.addWidget(self.end_time)
 
 		self.play_button = QPushButton("Play")
 		self.play_button.setIcon(QIcon("data/assets/icons/play.png"))
@@ -147,7 +157,7 @@ class Edit(QWidget):
 		layout.addWidget(self.output_path)
 		layout.addWidget(self.filename)
 		layout.addLayout(video_layout)
-		layout.addWidget(self.slider)
+		layout.addLayout(self.slider_layout)
 		layout.addLayout(control_layout)
 		layout.addWidget(self.crop_check)
 		layout.addWidget(self.task_bar)
@@ -196,6 +206,10 @@ class Edit(QWidget):
 		self.slider.setRange(0, duration)
 		self.slider.setValue((0, int(duration/2), duration))
 		self.slider.setTickInterval(duration/100)
+
+		minutes, seconds = divmod(duration // 1000, 60)
+		end_time = f"{minutes}:{seconds:02}"
+		self.end_time.setText(end_time)
 
 
 	def _update_handle_position(self, position):

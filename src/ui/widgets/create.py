@@ -81,7 +81,7 @@ class Create(QWidget):
         self.song_lyric_query.setPlaceholderText("Song name and artist to search for song lyrics")
         self.song_lyric_query.setClearButtonEnabled(True)
         self.lyric_search_button = QPushButton()
-        self.lyric_search_button.setIcon(QIcon("data/assets/icons/eyedropper.png"))
+        self.lyric_search_button.setIcon(QIcon("data/assets/icons/search.png"))
         self.lyric_search_button.setIconSize(QSize(16, 16))
         self.lyric_search_layout.addWidget(self.song_lyric_query)
         self.lyric_search_layout.addWidget(self.lyric_search_button)

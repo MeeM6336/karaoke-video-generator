@@ -54,7 +54,7 @@ def aligned_segments_to_ass(json_path, output_path, font_color):
 
     # Standard header matching the example file exactly
     header = f"""[Script Info]
-Title: {track_name}
+Title: Karaoke Video
 ScriptType: v4.00+
 WrapStyle: 0
 ScaledBorderAndShadow: yes

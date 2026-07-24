@@ -101,7 +101,7 @@ def main():
     output_path=args.output_file,
     temp_dir=temp_dir,
     font_color=args.font_color,
-    lyrics=args.query
+    lyrics=args.lyrics
   )
 
   # Cleanup
