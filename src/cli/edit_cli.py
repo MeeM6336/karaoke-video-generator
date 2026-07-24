@@ -8,6 +8,8 @@ def crop_video(input_path, output_path, start_ms, end_ms):
 
     subprocess.run([
         "ffmpeg",
+        "-hide_banner",
+        "-loglevel", "error",
         "-y",
         "-ss", str(start),
         "-to", str(end),
@@ -62,6 +64,7 @@ def main():
     args = parser.parse_args()
 
     crop_video(args.input_path, args.output_path, args.start, args.end)
+
 
 if __name__ == "__main__":
     main()

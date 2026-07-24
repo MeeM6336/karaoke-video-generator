@@ -35,7 +35,7 @@ class MainWindow(QMainWindow):
         self.controller = MainController(self)
 
         self.create_widget.task_bar.start_clicked.connect(
-            self.controller.start_karaoke_job
+            self.controller.start_create_job
         )
 
         self.upload_widget.task_bar.start_clicked.connect(

@@ -3,10 +3,11 @@ import re
 import requests
 
 from PySide6.QtCore import QProcess
-from PySide6.QtWidgets import QDialog
 from pathlib import Path
 from src.ui.components.missing_dialog import MissingDialog
 from src.ui.components.lyrics_dialog import LyricsDialog
+from src.ui.components.job_completion_dialog import JobCompletionDialog
+
 
 class MainController:
 
@@ -27,6 +28,12 @@ class MainController:
 
     def missing_dialog(self, missing):
         dialog = MissingDialog(missing)
+
+        dialog.exec()
+
+
+    def job_completion_dialog(self, job_name):
+        dialog = JobCompletionDialog(job_name)
 
         dialog.exec()
 
@@ -76,7 +83,7 @@ class MainController:
         return text.startswith(valid_urls)
 
 
-    def start_karaoke_job(self):
+    def start_create_job(self):
         self.job_type = "create"
 
         job = self.window.create_widget.get_job()
@@ -93,7 +100,7 @@ class MainController:
             self.missing_dialog(missing)
             return
 
-        cmd = ["-m", "src.cli.karaoke_cli"]
+        cmd = ["-m", "src.cli.create_cli"]
 
         if job["yt_link"]:
             cmd.extend(["--yt_link", job["yt_link"]])
@@ -274,8 +281,12 @@ class MainController:
 
 
     def process_finished(self, exit_code, exit_status):
-        print(f"Finished with exit code {exit_code}")
-        self.set_progress(progress=100)
+        if exit_code == 0:
+            self.set_progress(progress=100)
+            self.job_completion_dialog(self.job_type, "completed successfully")
+
+        else:
+            self.job_completion_dialog(self.job_type, f"failed with error code {exit_code}")
 
 
     def set_progress(self, text=None, progress=None):

@@ -53,7 +53,7 @@ def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_
     🎵 Make sure to like & subscribe and hit the bell icon so you don't miss out on the latest songs
     
     ⭐ Original Song Credit:
-    Originally performed  by artist {artist}
+    Originally performed by
 
     Artist: {artist}
     Song: {song}
@@ -135,6 +135,7 @@ def wrap_text(draw, text, font, max_width):
     lines.append(current)
 
   return lines
+
 
 def draw_centered(draw, text, font, y, image_width, font_color="white", max_width=None, line_spacing=0):
   if max_width is None:
