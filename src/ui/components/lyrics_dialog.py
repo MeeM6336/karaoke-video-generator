@@ -7,7 +7,7 @@ class LyricsDialog(QDialog):
     def __init__(self, query_results):
         super().__init__()
 
-        self.setWindowTitle("Missing Arguments")
+        self.setWindowTitle("Lyric Selection")
         self.setWindowIcon(QIcon("data/assets/icons/logo.png"))
         
         self.resize(800, 600)
@@ -39,6 +39,10 @@ class LyricsDialog(QDialog):
             }
         """)
 
+        self.instructions = QLabel()
+        self.instructions.setText("Select the song according to your search")
+        self.preview_label = QLabel()
+        self.preview_label.setText("Preview of lyrics:")
 
         self.list = QListWidget()
         for result in query_results[:5]:
@@ -67,7 +71,9 @@ class LyricsDialog(QDialog):
         self.preview.setReadOnly(True)
 
         layout = QVBoxLayout()
+        layout.addWidget(self.instructions)
         layout.addWidget(self.list)
+        layout.addWidget(self.preview_label)
         layout.addWidget(self.preview)
         layout.addWidget(self.buttonBox)
         self.setLayout(layout)

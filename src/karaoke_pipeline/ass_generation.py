@@ -45,7 +45,7 @@ def hex_to_ass(hex_color, alpha = 0):
 
     return f"&H{aa}{b}{g}{r}&"
 
-def aligned_segments_to_ass(json_path, output_path, track_name, font_color):
+def aligned_segments_to_ass(json_path, output_path, font_color):
     with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 

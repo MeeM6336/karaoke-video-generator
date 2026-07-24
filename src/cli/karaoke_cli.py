@@ -63,10 +63,10 @@ def main():
   )
 
   parser.add_argument(
-    "--query",
+    "--lyrics",
     type=str,
     required=False,
-    help="Query to lookup song lyrics using artist and song name"
+    help="Synced lyrics"
   )
 
   # Argument parsing and validation
@@ -101,7 +101,7 @@ def main():
     output_path=args.output_file,
     temp_dir=temp_dir,
     font_color=args.font_color,
-    query=args.query
+    lyrics=args.query
   )
 
   # Cleanup

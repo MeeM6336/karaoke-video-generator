@@ -11,7 +11,7 @@ class Create(QWidget):
     def __init__(self):
         super().__init__()
 
-        self.lrc_query = None
+        self.lyrics = None
 
         self.setObjectName("CreateWidget")
 
@@ -139,8 +139,11 @@ class Create(QWidget):
         return self.font_color.text()
 
 
-    def get_song_query(self):
-        return self.song_lyric_query.text()
+    def get_lyrics(self):
+        return self.lyrics
+
+    def set_lyrics(self, lyrics):
+        self.lyrics = lyrics
 
 
     def pick_font_color(self):
@@ -164,5 +167,5 @@ class Create(QWidget):
             "output_dir": self.get_output_path(),
             "filename": self.get_filename(),
             "font_color": self.get_font_color(),
-            "query": self.get_song_query()
+            "lyrics": self.get_lyrics()
         }

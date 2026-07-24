@@ -31,19 +31,7 @@ def get_lyrics(query):
     return
 
 
-def run_menu(query=None):
-  if query is not None:
-    results = get_lyrics(query)
-
-    for result in results:
-      if result.get("syncedLyrics"):
-        segments = lrc_to_segments(result['syncedLyrics'])
-        track_name = result['trackName']
-
-        return segments, track_name
-
-    return None, None
-
+def run_menu():
   while True:
     print("Please search for the song to sync lyrics too, or (-1) to skip and use WhisperX transcription:")
     query = input("> ").strip().lower()
@@ -61,7 +49,7 @@ def run_menu(query=None):
 
     segments = lrc_to_segments(results[choice]['syncedLyrics'])
 
-    return segments, results[choice]['trackName']
+    return segments
 
     
 def download_yt(download_type, url, output_dir):
@@ -100,9 +88,8 @@ def download_yt(download_type, url, output_dir):
     return str(original_file.with_suffix(".mp4"))
 
 
-def video_generation(font_color, yt_link=None, audio_path="", video_path="", output_path=None, temp_dir=None, query=None):
+def video_generation(font_color, yt_link=None, audio_path="", video_path="", output_path=None, temp_dir=None, lyrics=None):
   segments_path = None
-  track_name = None
 
   audio_path = (
     audio_path
@@ -119,7 +106,11 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   if output_path is None:
     output_path = "output/output_video.mp4"
 
-  segments, track_name = run_menu(query)
+  if lyrics is None:
+    segments = run_menu()
+
+  else:
+    segments = lrc_to_segments(lyrics)
   
   if segments is not None:
     segments_path = to_json("segments", temp_dir, segments)
@@ -169,7 +160,7 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   # Generate .ass file
   aligned_dir = temp_dir / "aligned_segments.json"
   ass_dir = temp_dir / "lyrics.ass"
-  aligned_segments_to_ass(aligned_dir, ass_dir, track_name, font_color)
+  aligned_segments_to_ass(aligned_dir, ass_dir, font_color)
 
   # Instrumental clean-up
   raw_instrumental_dir = temp_dir / "htdemucs_ft" / Path(audio_path).stem / "no_vocals.wav"

@@ -58,7 +58,7 @@ class MainController:
 
         if dialog.exec():
             result = dialog.selected_result()
-            print(f"Recieved: {result["trackName"]}")
+            self.window.create_widget.set_lyrics(result["syncedLyrics"])
         else:
             return
 
@@ -111,8 +111,8 @@ class MainController:
         if job["font_color"]:
             cmd.extend(["--font_color", job["font_color"]])
 
-        if job["query"]:
-            cmd.extend(["--query", job["query"]])
+        if job["lyrics"]:
+            cmd.extend(["--lyrics", job["lyrics"]])
 
         self.process.start(sys.executable, cmd)
 
