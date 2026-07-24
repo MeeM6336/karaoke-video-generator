@@ -113,6 +113,8 @@ class MainController:
 
         if job["lyrics"]:
             cmd.extend(["--lyrics", job["lyrics"]])
+        else:
+            cmd.extend(["--lyrics", "-1"])
 
         self.process.start(sys.executable, cmd)
 

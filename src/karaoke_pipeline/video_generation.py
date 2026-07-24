@@ -109,8 +109,11 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   if lyrics is None:
     segments = run_menu()
 
-  else:
+  elif lyrics != "-1":
     segments = lrc_to_segments(lyrics)
+
+  else:
+    segments = None
   
   if segments is not None:
     segments_path = to_json("segments", temp_dir, segments)
