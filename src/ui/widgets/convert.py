@@ -68,7 +68,7 @@ class Convert(QWidget):
         self.youtube_url.setPlaceholderText("YouTube Video URL")
         self.youtube_url.setClearButtonEnabled(True)
 
-        self.output_upload = FileUpload("Output", "Select a folder to output video")
+        self.output_upload = FileUpload("Folder", "Select a folder to output video", folder_name="data/bg_videos")
         self.output_upload.file_path.setClearButtonEnabled(True)
 
         self.filename = QLineEdit()

@@ -57,7 +57,7 @@ class Upload(QWidget):
         layout.setSpacing(50)
         layout.setContentsMargins(50, 50, 50, 0)
 
-        self.file_upload = FileUpload("Video", "Select a file to upload")
+        self.file_upload = FileUpload("Video", "Select a file to upload", folder_name="output")
         self.file_upload.file_path.setClearButtonEnabled(True)
 
         self.title = QLineEdit()

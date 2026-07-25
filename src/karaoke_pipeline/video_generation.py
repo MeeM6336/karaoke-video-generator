@@ -54,7 +54,7 @@ def run_menu():
     
 def download_yt(download_type, url, output_dir):
   output_dir = Path(output_dir)
-  output_template = str(output_dir / "%(title)s.%(ext)s")
+  output_template = str(output_dir / "yt_dwnld.%(ext)s")
 
   ydl_opts = {
     "outtmpl": output_template,

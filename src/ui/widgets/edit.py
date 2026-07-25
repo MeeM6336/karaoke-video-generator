@@ -88,8 +88,8 @@ class Edit(QWidget):
 		layout.setContentsMargins(50, 50, 50, 0)
 		layout.setSpacing(12)
 
-		self.input_path = FileUpload("Video", "Select a video to edit")
-		self.output_path = FileUpload("Output", "Select a folder to output video")
+		self.input_path = FileUpload("Video", "Select a video to edit", folder_name="data/bg_videos")
+		self.output_path = FileUpload("Folder", "Select a folder to output video", folder_name="data/bg_videos")
 		self.output_path.file_path.setClearButtonEnabled(True)
 		self.filename = QLineEdit()
 		self.filename.setClearButtonEnabled(True)

@@ -89,9 +89,9 @@ class Create(QWidget):
 
         self.audio_upload = FileUpload("Audio", "Select an audio file")
         self.audio_upload.file_path.setClearButtonEnabled(True)
-        self.video_upload = FileUpload("Video", "Select a background video file")
+        self.video_upload = FileUpload("Video", "Select a background video file", folder_name="data/bg_videos")
         self.video_upload.file_path.setClearButtonEnabled(True)  
-        self.output_upload = FileUpload("Output", "Select a folder to output video")
+        self.output_upload = FileUpload("Folder", "Select a folder to output video", folder_name="output")
         self.output_upload.file_path.setClearButtonEnabled(True)
 
         self.font_color_layout = QHBoxLayout()

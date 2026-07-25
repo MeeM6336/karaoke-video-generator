@@ -53,7 +53,6 @@ def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_
     🎵 Make sure to like & subscribe and hit the bell icon so you don't miss out on the latest songs
     
     ⭐ Original Song Credit:
-    Originally performed by
 
     Artist: {artist}
     Song: {song}
@@ -61,7 +60,7 @@ def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_
     Disclaimer:
     This karaoke/instrumental version was created for entertainment purposes. All rights to the original composition, lyrics, and master recording belong to their respective copyright owners.
     
-    #Karaoke #Lyrics #{artist} #{song}
+    #Karaoke #Lyrics #{artist} #{song} #KaraokeVersion
     """
 
   request_body = {

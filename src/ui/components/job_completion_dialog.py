@@ -44,8 +44,8 @@ class JobCompletionDialog(QDialog):
         self.buttonBox.accepted.connect(self.accept)
 
         layout = QVBoxLayout()
-        message = QLabel()
-        message.setText(f"{job_name} {message}")
-        layout.addWidget(message)
+        job_message = QLabel()
+        job_message.setText(f"{job_name} {message}")
+        layout.addWidget(job_message)
         layout.addWidget(self.buttonBox)
         self.setLayout(layout)

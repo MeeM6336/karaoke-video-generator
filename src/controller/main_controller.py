@@ -32,8 +32,8 @@ class MainController:
         dialog.exec()
 
 
-    def job_completion_dialog(self, job_name):
-        dialog = JobCompletionDialog(job_name)
+    def job_completion_dialog(self, job_name, message):
+        dialog = JobCompletionDialog(job_name, message)
 
         dialog.exec()
 
