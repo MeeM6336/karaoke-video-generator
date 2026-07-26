@@ -211,7 +211,11 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
     "-filter:a", filters, 
 
     "-vf",
-    f"scale=1920:1080,ass=filename='{ass_dir_filtered}'",
+    (
+      f"scale=1920:1080:force_original_aspect_ratio=decrease,"
+      f"pad=1920:1080:(ow-iw)/2:(oh-ih)/2,"
+      f"ass=filename='{ass_dir_filtered}'"
+    ),
 
     "-map", "0:v:0",
     "-map", "1:a:0",
