@@ -27,13 +27,13 @@ class MainController:
 
 
     def missing_dialog(self, missing):
-        dialog = MissingDialog(missing)
+        dialog = MissingDialog(missing, self.window)
 
         dialog.exec()
 
 
     def job_completion_dialog(self, job_name, message):
-        dialog = JobCompletionDialog(job_name, message)
+        dialog = JobCompletionDialog(job_name, message, self.window)
 
         dialog.exec()
 
@@ -61,7 +61,7 @@ class MainController:
             print(f"Error fetching data: {e}")
             return
 
-        dialog = LyricsDialog(results)
+        dialog = LyricsDialog(results, self.window)
 
         if dialog.exec():
             result = dialog.selected_result()

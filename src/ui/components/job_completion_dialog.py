@@ -2,8 +2,8 @@ from PySide6.QtWidgets import QDialog, QDialogButtonBox, QLabel, QVBoxLayout
 from PySide6.QtGui import QIcon
 
 class JobCompletionDialog(QDialog):
-    def __init__(self, job_name, message):
-        super().__init__()
+    def __init__(self, job_name, message, parent=None):
+        super().__init__(parent)
 
         self.setWindowTitle("Job Completed")
 

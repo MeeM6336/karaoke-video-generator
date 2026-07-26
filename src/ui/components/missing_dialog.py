@@ -2,8 +2,8 @@ from PySide6.QtWidgets import QDialog, QDialogButtonBox, QLabel, QVBoxLayout
 from PySide6.QtGui import QIcon
 
 class MissingDialog(QDialog):
-    def __init__(self, messages):
-        super().__init__()
+    def __init__(self, messages, parent=None):
+        super().__init__(parent)
 
         self.setWindowTitle("Missing Arguments")
 

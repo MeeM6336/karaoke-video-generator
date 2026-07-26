@@ -4,8 +4,8 @@ from PySide6.QtCore import Qt
 
 
 class LyricsDialog(QDialog):
-    def __init__(self, query_results):
-        super().__init__()
+    def __init__(self, query_results, parent=None):
+        super().__init__(parent)
 
         self.setWindowTitle("Lyric Selection")
         self.setWindowIcon(QIcon("data/assets/icons/logo.png"))

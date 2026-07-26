@@ -46,7 +46,7 @@ def authenticate_youtube():
 
 def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_path=None, tags=None):
   description = f"""
-    🎤 Go ahead and sing {song} by {artist} to your hearts desire! .
+    🎤 Go ahead and sing {song} by {artist} to your hearts desire!
 
     ❓ Want to request your favorite songs? Leave a comment below and just wait for your best karaoke night
     
