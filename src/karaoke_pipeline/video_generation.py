@@ -209,7 +209,8 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
 
     "-filter:a", filters, 
 
-    "-vf", f"ass=output/temp/lyrics.ass,scale=1920:1080",
+    "-vf",
+    f"scale=1920:1080,ass={ass_dir}",
 
     "-map", "0:v:0",
     "-map", "1:a:0",

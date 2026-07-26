@@ -252,6 +252,11 @@ class MainController:
                 "--end",
                 str(job["end"]),
             ])
+        if job["audio_merge"]:
+            cmd.extend([
+                "--audio_path",
+                str(job["audio_merge"])
+            ])
 
         self.process.start(sys.executable, cmd)
 

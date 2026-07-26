@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Kirk Karaoke Dashboard")
-        self.setFixedSize(QSize(1440, 900))
+        self.setFixedSize(QSize(1536, 1000))
 
         main_layout = QHBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)

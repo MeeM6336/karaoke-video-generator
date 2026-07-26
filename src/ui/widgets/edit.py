@@ -24,7 +24,7 @@ class Edit(QWidget):
 			}
 
 			QLineEdit {
-				padding: 8px;
+				padding: 10px;
 				font-size: 12px;
 				background-color: #42414d;
 				color: #ffffff;
@@ -86,9 +86,10 @@ class Edit(QWidget):
 		layout = QVBoxLayout()
 		layout.setAlignment(Qt.AlignTop)
 		layout.setContentsMargins(50, 50, 50, 0)
-		layout.setSpacing(12)
+		layout.setSpacing(14)
 
 		self.input_path = FileUpload("Video", "Select a video to edit", folder_name="data/bg_videos")
+		self.audio_path = FileUpload("Audio", "Select a audio to merge to video", folder_name="data/audio")
 		self.output_path = FileUpload("Folder", "Select a folder to output video", folder_name="data/bg_videos")
 		self.output_path.file_path.setClearButtonEnabled(True)
 		self.filename = QLineEdit()
@@ -148,18 +149,21 @@ class Edit(QWidget):
 		self.crop_check = QCheckBox()
 		self.crop_check.setText("Crop to selected range")
 
+		edit_layout.addWidget(self.crop_check)
+
 		# Taskbar
 		self.task_bar = TaskBar()
 		self.task_bar.setContentsMargins(0, 30, 0, 0)
 
 		# Layout Widgets
 		layout.addWidget(self.input_path)
+		layout.addWidget(self.audio_path)
 		layout.addWidget(self.output_path)
 		layout.addWidget(self.filename)
 		layout.addLayout(video_layout)
 		layout.addLayout(self.slider_layout)
 		layout.addLayout(control_layout)
-		layout.addWidget(self.crop_check)
+		layout.addLayout(edit_layout)
 		layout.addWidget(self.task_bar)
 
 		self.setLayout(layout)
@@ -225,6 +229,10 @@ class Edit(QWidget):
 
 	def get_crop_check(self):
 		return self.crop_check.isChecked()
+
+
+	def get_audio_path(self):
+		return self.audio_path.get_path()
 	
 
 	def get_input_path(self):
@@ -245,6 +253,7 @@ class Edit(QWidget):
 			"output_dir": self.get_output_dir(),
 			"filename": self.get_output_filename(),
 			"crop": self.get_crop_check(),
+			"audio_merge": self.get_audio_path(),
 			"start": int(self.slider.value()[0]),
 			"end": int(self.slider.value()[2])
 		}

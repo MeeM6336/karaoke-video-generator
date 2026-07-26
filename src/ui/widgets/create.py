@@ -101,7 +101,7 @@ class Create(QWidget):
         self.color_button.clicked.connect(self.pick_font_color)
 
         self.task_bar = TaskBar()
-        self.task_bar.setContentsMargins(0, 136, 0, 0)
+        self.task_bar.setContentsMargins(0, 218, 0, 0)
 
         layout.addWidget(self.youtube_url)
         layout.addWidget(self.audio_upload)

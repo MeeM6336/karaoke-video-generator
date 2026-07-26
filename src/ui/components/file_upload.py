@@ -69,6 +69,20 @@ class FileUpload(QWidget):
                     "",
                     f"All Files (*)"
                 )
+        elif self.file_type.lower() == "audio":
+            if self.folder_name == "data/audio":
+                filename, _ = QFileDialog.getOpenFileName(
+                    self,
+                    f"Choose {self.file_type} File",
+                    "data/audio"
+                )
+            else:
+                filename, _ = QFileDialog.getOpenFileName(
+                    self,
+                    f"Choose {self.file_type} File",
+                    "",
+                    f"All Files (*)"
+                )
         else:
             filename, _ = QFileDialog.getOpenFileName(
                 self,
