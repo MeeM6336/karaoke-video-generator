@@ -163,6 +163,7 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   # Generate .ass file
   aligned_dir = temp_dir / "aligned_segments.json"
   ass_dir = temp_dir / "lyrics.ass"
+  ass_dir_filtered = ass_dir.as_posix().replace(":", "\\:")
   aligned_segments_to_ass(aligned_dir, ass_dir, font_color)
 
   # Instrumental clean-up
@@ -210,7 +211,7 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
     "-filter:a", filters, 
 
     "-vf",
-    f"scale=1920:1080,ass={ass_dir}",
+    f"scale=1920:1080,ass=filename='{ass_dir_filtered}'",
 
     "-map", "0:v:0",
     "-map", "1:a:0",
