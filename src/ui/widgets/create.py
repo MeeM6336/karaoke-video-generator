@@ -160,12 +160,21 @@ class Create(QWidget):
 
     
     def get_job(self):
-        return {
+        job = {
             "yt_link": self.get_yt_link(),
             "audio_file": self.get_audio_path(),
             "video_file": self.get_video_path(),
             "output_dir": self.get_output_path(),
             "filename": self.get_filename(),
             "font_color": self.get_font_color(),
-            "lyrics": self.get_lyrics()
         }
+
+        lyric_obj = self.get_lyrics()
+
+        if lyric_obj.get("syncedLyrics"):
+            job["slyrics"] = lyric_obj["syncedLyrics"]
+        elif lyric_obj.get("plainLyrics"):
+            job["plyrics"] = lyric_obj["plainLyrics"]
+
+
+        return job

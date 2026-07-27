@@ -55,10 +55,17 @@ def main():
   )
 
   parser.add_argument(
-    "--lyrics",
+    "--slyrics",
     type=str,
     required=False,
-    help="Synced lyrics"
+    help="Provided synced lyrics"
+  )
+
+  parser.add_argument(
+    "--plyrics",
+    type=str,
+    required=False,
+    help="Provided plain lyrics"
   )
 
   # Argument parsing and validation
@@ -93,7 +100,8 @@ def main():
     output_path=args.output_file,
     temp_dir=temp_dir,
     font_color=args.font_color,
-    lyrics=args.lyrics
+    slyrics=args.slyrics,
+    plyrics=args.plyrics
   )
 
   # Cleanup

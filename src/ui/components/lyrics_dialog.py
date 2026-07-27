@@ -60,7 +60,20 @@ class LyricsDialog(QDialog):
                 )
 
                 self.list.addItem(item)
-        self.list.currentItemChanged.connect(self._on_selection_changed)
+
+            elif result.get("plainLyrics"):
+                minutes, seconds = divmod(int(result["duration"]), 60) if result.get("duration") else (0, 0)
+
+                item = QListWidgetItem(
+                    f"{result["artistName"]} - {result["trackName"]} - ({minutes}:{seconds:02})"
+                )
+
+                item.setData(
+                    Qt.UserRole,
+                    result
+                )
+
+                self.list.addItem(item)
 
         ok_btn = QDialogButtonBox.Ok
         cancel_btn = QDialogButtonBox.Cancel
@@ -79,6 +92,7 @@ class LyricsDialog(QDialog):
         layout.addWidget(self.buttonBox)
         self.setLayout(layout)
 
+
     def selected_result(self):
         item = self.list.currentItem()
 
@@ -86,10 +100,3 @@ class LyricsDialog(QDialog):
             return None
 
         return item.data(Qt.UserRole)
-
-    def _on_selection_changed(self, curr, prev):
-        if curr is None:
-            return
-        
-        result = curr.data(Qt.UserRole) 
-        self.preview.setPlainText(result["syncedLyrics"])

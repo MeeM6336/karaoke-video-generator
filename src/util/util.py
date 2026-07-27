@@ -13,41 +13,59 @@ def to_json(filename, output_dir, segments):
   return json_path
 
 
-def lrc_to_segments(lrc_text):
-  pattern = re.compile(r"\[(\d+):(\d+\.\d+)\]\s*(.*)")
+def lrc_to_segments(lrc_text, lyric_type):
+  if lyric_type == "synced":
+    pattern = re.compile(r"\[(\d+):(\d+\.\d+)\]\s*(.*)")
 
-  entries = []
+    entries = []
 
-  for line in lrc_text.splitlines():
-    match = pattern.match(line)
-    if not match:
-      continue
+    for line in lrc_text.splitlines():
+      match = pattern.match(line)
+      if not match:
+        continue
 
-    minutes = int(match.group(1))
-    seconds = float(match.group(2))
-    text = match.group(3).strip()
+      minutes = int(match.group(1))
+      seconds = float(match.group(2))
+      text = match.group(3).strip()
 
-    if not text:
-      continue
+      if not text:
+        continue
 
-    start = minutes * 60 + seconds
+      start = minutes * 60 + seconds
 
-    entries.append({
-      "text": text,
-      "start": start
-    })
+      entries.append({
+        "text": text,
+        "start": start
+      })
 
-  entries.sort(key=lambda x: x["start"])
+    entries.sort(key=lambda x: x["start"])
 
-  segments = []
-  for i in range(len(entries)):
-    start = entries[i]["start"]
-    end = entries[i + 1]["start"] if i + 1 < len(entries) else start + 4.0  # fallback duration
+    segments = []
+    for i in range(len(entries)):
+      start = entries[i]["start"]
+      end = entries[i + 1]["start"] if i + 1 < len(entries) else start + 4.0
 
-    segments.append({
-      "text": entries[i]["text"],
-      "start": start,
-      "end": end
-    })
+      segments.append({
+        "text": entries[i]["text"],
+        "start": start,
+        "end": end
+      })
 
-  return segments
+    return segments
+
+  elif lyric_type == "plain":
+    segments = []
+
+    for line in lrc_text.splitlines():
+      line = line.strip()
+
+      if not line:
+        continue
+
+      segments.append({
+        "start": 0.0,
+        "end": 0.0,
+        "text": line,
+      })
+
+    return segments

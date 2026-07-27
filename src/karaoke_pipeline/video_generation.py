@@ -88,7 +88,7 @@ def download_yt(download_type, url, output_dir):
     return str(original_file.with_suffix(".mp4"))
 
 
-def video_generation(font_color, yt_link=None, audio_path="", video_path="", output_path=None, temp_dir=None, lyrics=None):
+def video_generation(font_color, yt_link=None, audio_path="", video_path="", output_path=None, temp_dir=None, slyrics=None, plyrics=None):
   segments_path = None
 
   audio_path = (
@@ -106,11 +106,14 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   if output_path is None:
     output_path = "output/output_video.mp4"
 
-  if lyrics is None:
+  if plyrics or slyrics is None:
     segments = run_menu()
 
-  elif lyrics != "-1":
-    segments = lrc_to_segments(lyrics)
+  elif plyrics != "-1":
+    segments = lrc_to_segments(plyrics, "plain")
+
+  elif slyrics != "-1":
+    segments = lrc_to_segments(slyrics, "synced")
 
   else:
     segments = None
