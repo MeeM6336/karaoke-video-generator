@@ -46,21 +46,22 @@ def authenticate_youtube():
 
 def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_path=None, tags=None):
   description = f"""
-    🎤 Go ahead and sing {song} by {artist} to your hearts desire!
 
-    ❓ Want to request your favorite songs? Leave a comment below and just wait for your best karaoke night
-    
-    🎵 Make sure to like & subscribe and hit the bell icon so you don't miss out on the latest songs
-    
-    ⭐ Original Song Credit:
+🎤 Go ahead and sing {song} by {artist} to your hearts desire!
 
-    Artist: {artist}
-    Song: {song}
+❓ Want to request your favorite songs? Leave a comment below and just wait for your best karaoke night
 
-    Disclaimer:
-    This karaoke/instrumental version was created for entertainment purposes. All rights to the original composition, lyrics, and master recording belong to their respective copyright owners.
-    
-    #Karaoke #Lyrics #{artist} #{song} #KaraokeVersion
+🎵 Make sure to like & subscribe and hit the bell icon so you don't miss out on the latest songs
+
+⭐ Original Song Credit:
+
+Artist: {artist}
+Song: {song}
+
+Disclaimer:
+This karaoke/instrumental version was created for entertainment purposes. All rights to the original composition, lyrics, and master recording belong to their respective copyright owners.
+
+#Karaoke #Lyrics #{artist} #{song} #KaraokeVersion
     """
 
   request_body = {
