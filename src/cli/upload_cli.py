@@ -255,7 +255,7 @@ def main():
   upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_path, tags)
 
   if args.thumbnail:
-    shutil.rmtree(thumbnail_path, ignore_errors=True)
+    shutil.rmtree("output/temp", ignore_errors=True)
 
 
 if __name__ == "__main__":
