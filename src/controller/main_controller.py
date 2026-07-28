@@ -119,9 +119,9 @@ class MainController:
         if job["font_color"]:
             cmd.extend(["--font_color", job["font_color"]])
 
-        if job["slyrics"]:
-            cmd.extend(["--syrics", job["slyrics"]])
-        elif job["plyrics"]:
+        if job.get("slyrics"):
+            cmd.extend(["--slyrics", job["slyrics"]])
+        elif job.get("plyrics"):
             cmd.extend(["--plyrics", job["plyrics"]])
         else:
             cmd.extend(["--plyrics", "-1"])

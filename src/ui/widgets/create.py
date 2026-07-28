@@ -171,10 +171,10 @@ class Create(QWidget):
 
         lyric_obj = self.get_lyrics()
 
-        if lyric_obj.get("syncedLyrics"):
-            job["slyrics"] = lyric_obj["syncedLyrics"]
-        elif lyric_obj.get("plainLyrics"):
-            job["plyrics"] = lyric_obj["plainLyrics"]
-
+        if lyric_obj is not None:
+            if lyric_obj.get("syncedLyrics"):
+                job["slyrics"] = lyric_obj["syncedLyrics"]
+            elif lyric_obj.get("plainLyrics"):
+                job["plyrics"] = lyric_obj["plainLyrics"]
 
         return job

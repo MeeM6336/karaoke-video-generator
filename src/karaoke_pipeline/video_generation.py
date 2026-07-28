@@ -106,13 +106,13 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   if output_path is None:
     output_path = "output/output_video.mp4"
 
-  if plyrics or slyrics is None:
+  if plyrics is None and slyrics is None:
     segments = run_menu()
 
-  elif plyrics != "-1":
+  elif plyrics not in (None, "-1"):
     segments = lrc_to_segments(plyrics, "plain")
 
-  elif slyrics != "-1":
+  elif slyrics not in (None, "-1"):
     segments = lrc_to_segments(slyrics, "synced")
 
   else:

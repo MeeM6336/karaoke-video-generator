@@ -74,6 +74,7 @@ class LyricsDialog(QDialog):
                 )
 
                 self.list.addItem(item)
+        self.list.currentItemChanged.connect(self._on_selection_changed)
 
         ok_btn = QDialogButtonBox.Ok
         cancel_btn = QDialogButtonBox.Cancel
@@ -100,3 +101,10 @@ class LyricsDialog(QDialog):
             return None
 
         return item.data(Qt.UserRole)
+
+    def _on_selection_changed(self, curr, prev):
+        if curr is None:
+            return
+        
+        result = curr.data(Qt.UserRole) 
+        self.preview.setPlainText(result["syncedLyrics"] if result.get("syncedLyrics") else result["plainLyrics"])
