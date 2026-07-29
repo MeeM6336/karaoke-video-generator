@@ -192,10 +192,6 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
 
   print("[PROGRESS] - 80%", flush=True)
 
-  filters = (
-    "loudnorm"
-  )
-
   # Create video
   cmd = [
     "ffmpeg",
@@ -211,7 +207,8 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
     "-i", video_path,
     "-i", final_instrumental_path,
 
-    "-filter:a", filters, 
+    "-filter:a",
+    "loudnorm=I=-14:LRA=11:TP=-1.5",
 
     "-vf",
     (
