@@ -167,6 +167,9 @@ class MainController:
         if job["video"]:
             cmd.append("--video")
 
+        if job["compatibility"]:
+            cmd.append("--compatibility")
+
         self.process.start(sys.executable, cmd)
 
     

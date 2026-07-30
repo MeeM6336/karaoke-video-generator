@@ -1,9 +1,10 @@
 from pathlib import Path
 import argparse
 import yt_dlp
+import subprocess
 
 
-def convert_yt(download_type, url, output_dir, filename="%(title)s"):
+def convert_yt(download_type, url, output_dir, filename="%(title)s", max_compatibility=False):
     output_dir = Path(output_dir)
     output_template = str(output_dir / f"{filename}.%(ext)s")
 
@@ -28,7 +29,28 @@ def convert_yt(download_type, url, output_dir, filename="%(title)s"):
         ydl_opts["format"] = "bestvideo[ext=mp4]/bestvideo"
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([url])
+        info = ydl.extract_info(url, download=True)
+        downloaded_file = Path(ydl.prepare_filename(info))
+
+    if max_compatibility:
+        temp_file = downloaded_file.with_name(
+            downloaded_file.stem + "_tmp.mp4"
+        )
+        subprocess.run([
+            "ffmpeg",
+            "-hide_banner",
+            "-loglevel", "error",
+            "-i", str(downloaded_file),
+            "-y",
+            "-c:v", "h264_nvenc",
+            "-cq", "19",
+            "-preset", "p5",
+            "-c:a", "copy",
+            str(temp_file),
+        ], check=True)
+
+        downloaded_file.unlink()
+        temp_file.rename(downloaded_file)
 
 
 def main():
@@ -73,6 +95,14 @@ def main():
         help="Output file name"
     )
 
+    parser.add_argument(
+        "--compatibility",
+        action="store_true",
+        default=False,
+        required=False,
+        help="Maximize compatibility with other sources?"
+    )
+
     args = parser.parse_args()
 
     if args.audio:
@@ -81,7 +111,7 @@ def main():
 
     elif args.video:
         print("Converting to video...")
-        convert_yt("video", args.yt_link, args.output_dir, args.filename)
+        convert_yt("video", args.yt_link, args.output_dir, args.filename, args.compatibility)
 
 if __name__ == "__main__":
     main()

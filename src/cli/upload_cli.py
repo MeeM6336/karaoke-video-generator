@@ -61,7 +61,7 @@ Song: {song}
 Disclaimer:
 This karaoke/instrumental version was created for entertainment purposes. All rights to the original composition, lyrics, and master recording belong to their respective copyright owners.
 
-#Karaoke #Lyrics #{artist} #{song} #KaraokeVersion
+#Karaoke #KaraokeVersion #{artist.replace(" ", "")} #{song.replace(" ", "")} 
     """
 
   request_body = {

@@ -86,11 +86,15 @@ class Convert(QWidget):
         self.audio_checkbox = QCheckBox()
         self.audio_checkbox.setText("Download Audio")
 
+        self.compatibility_checkbox = QCheckBox()
+        self.compatibility_checkbox.setText("Maximize compatibility")
+
         self.task_bar = TaskBar()
         self.task_bar.setContentsMargins(0, 517, 0, 0)
 
         checkbox_layout.addWidget(self.video_checkbox)
         checkbox_layout.addWidget(self.audio_checkbox)
+        checkbox_layout.addWidget(self.compatibility_checkbox)
 
         layout.addWidget(self.youtube_url)
         layout.addWidget(self.output_upload)
@@ -107,6 +111,10 @@ class Convert(QWidget):
 
     def get_audio_check(self):
         return self.audio_checkbox.isChecked()
+
+
+    def get_compatibility_check(self):
+        return self.compatibility_checkbox.isChecked()
     
 
     def get_output_path(self):
@@ -122,7 +130,8 @@ class Convert(QWidget):
             "video": self.get_video_check(),
             "audio": self.get_audio_check(),
             "output_dir": self.get_output_path(),
-            "filename": self.get_filename()
+            "filename": self.get_filename(),
+            "compatibility": self.get_compatibility_check()
         }
 
         
