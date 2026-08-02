@@ -45,8 +45,11 @@ def lrc_to_segments(lrc_text, lyric_type):
       start = entries[i]["start"]
       end = entries[i + 1]["start"] if i + 1 < len(entries) else start + 4.0
 
+      segment_text = entries[i]["text"]
+      cleaned_segment_text = re.sub(r"\s*\([^)]*\)", "", segment_text)
+
       segments.append({
-        "text": entries[i]["text"],
+        "text": cleaned_segment_text,
         "start": start,
         "end": end
       })
