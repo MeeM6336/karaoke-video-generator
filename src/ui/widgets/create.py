@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QHBoxLayout, QColorDialog, QPushButton
+from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QHBoxLayout, QColorDialog, QPushButton, QComboBox, QLabel
 from PySide6.QtCore import Qt, QSize, Signal
 from PySide6.QtGui import QColor, QIcon
 from src.ui.components.file_upload import FileUpload
@@ -33,6 +33,14 @@ class Create(QWidget):
                 font-size: 14px;
                 color: #ffffff;
                 background-color: #42414d;
+            }
+
+            QComboBox {
+                padding: 6px;
+            }
+
+            QLabel {
+                font-size: 16px;
             }
                            
             QLineEdit:read-only {
@@ -100,8 +108,19 @@ class Create(QWidget):
         self.font_color_layout.addWidget(self.color_button)
         self.color_button.clicked.connect(self.pick_font_color)
 
+        self.font_size_layout = QVBoxLayout()
+        self.font_size_layout.setSpacing(15)
+        self.font_size_layout.setContentsMargins(0, 0, 800, 0)
+        self.font_size_box = QComboBox()
+        self.font_size_box.addItems(["Small", "Medium", "Large"])
+        self.font_size_box.setCurrentText("Medium")
+        self.font_size_label = QLabel()
+        self.font_size_label.setText("Font Size:")
+        self.font_size_layout.addWidget(self.font_size_label)
+        self.font_size_layout.addWidget(self.font_size_box)
+
         self.task_bar = TaskBar()
-        self.task_bar.setContentsMargins(0, 218, 0, 0)
+        self.task_bar.setContentsMargins(0, 98, 0, 0)
 
         layout.addWidget(self.youtube_url)
         layout.addWidget(self.audio_upload)
@@ -110,6 +129,7 @@ class Create(QWidget):
         layout.addWidget(self.filename)
         layout.addLayout(self.font_color_layout)
         layout.addLayout(self.lyric_search_layout)
+        layout.addLayout(self.font_size_layout)
         layout.addWidget(self.task_bar)
 
         self.setLayout(layout)
@@ -137,6 +157,10 @@ class Create(QWidget):
 
     def get_font_color(self):
         return self.font_color.text()
+
+
+    def get_font_size(self):
+        return self.font_size_box.currentText().lower()
 
 
     def get_lyrics(self):
@@ -167,6 +191,7 @@ class Create(QWidget):
             "output_dir": self.get_output_path(),
             "filename": self.get_filename(),
             "font_color": self.get_font_color(),
+            "font_size": self.get_font_size()
         }
 
         lyric_obj = self.get_lyrics()

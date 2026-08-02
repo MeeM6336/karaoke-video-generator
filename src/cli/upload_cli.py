@@ -44,7 +44,7 @@ def authenticate_youtube():
   return build("youtube", "v3", credentials=creds)
 
 
-def upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_path=None, tags=None):
+def upload_video_to_youtube(youtube, video_file, title, artist, song, visibility, thumbnail_path=None, tags=None):
   description = f"""
 
 🎤 Go ahead and sing {song} by {artist} to your hearts desire!
@@ -72,7 +72,7 @@ This karaoke/instrumental version was created for entertainment purposes. All ri
       "categoryId": "10"
     },
     "status": {
-      "privacyStatus": "public"
+      "privacyStatus": visibility
     }
   }
 
@@ -234,6 +234,13 @@ def main():
   )
 
   parser.add_argument(
+    "--visibility",
+    type=str,
+    required=True,
+    help="Video visibility."
+  )
+
+  parser.add_argument(
     "--thumbnail",
     action="store_true",
     default=False,
@@ -248,11 +255,12 @@ def main():
   artist = args.artist
   song = args.song
   thumbnail_path = None
+  visibility = args.visibility
 
   if args.thumbnail:
    thumbnail_path =  create_thumbnail(song, artist)
 
-  upload_video_to_youtube(youtube, video_file, title, artist, song, thumbnail_path, tags)
+  upload_video_to_youtube(youtube, video_file, title, artist, song, visibility, thumbnail_path, tags)
 
   if args.thumbnail:
     shutil.rmtree("output/temp", ignore_errors=True)

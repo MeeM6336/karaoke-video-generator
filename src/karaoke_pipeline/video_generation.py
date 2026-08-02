@@ -88,7 +88,7 @@ def download_yt(download_type, url, output_dir):
     return str(original_file.with_suffix(".mp4"))
 
 
-def video_generation(font_color, yt_link=None, audio_path="", video_path="", output_path=None, temp_dir=None, slyrics=None, plyrics=None):
+def video_generation(font_color, yt_link=None, audio_path="", video_path="", output_path=None, temp_dir=None, slyrics=None, plyrics=None, font_size=None):
   segments_path = None
 
   audio_path = (
@@ -167,9 +167,9 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   aligned_dir = temp_dir / "aligned_segments.json"
   ass_dir = temp_dir / "lyrics.ass"
   ass_dir_filtered = ass_dir.as_posix().replace(":", "\\:")
-  aligned_segments_to_ass(aligned_dir, ass_dir, font_color)
+  aligned_segments_to_ass(aligned_dir, ass_dir, font_color, font_size)
 
-  # Instrumental clean-up
+  # Instrumental clean-up with audio seperator
   raw_instrumental_dir = temp_dir / "htdemucs_ft" / Path(audio_path).stem / "no_vocals.wav"
   model_path = Path(output_path).parent.parent / "data" / "model"
   final_instrumental_path = temp_dir / "audio-separator" / "no_vocals_(Instrumental)_UVR-MDX-NET-Inst_HQ_4.wav"
@@ -208,7 +208,7 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
     "-i", final_instrumental_path,
 
     "-filter:a",
-    "loudnorm=I=-14:LRA=11:TP=-1.5",
+    "volume=2dB,loudnorm=I=-14:LRA=11:TP=-1.5",
 
     "-vf",
     (

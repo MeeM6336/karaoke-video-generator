@@ -45,12 +45,22 @@ def hex_to_ass(hex_color, alpha = 0):
 
     return f"&H{aa}{b}{g}{r}&"
 
-def aligned_segments_to_ass(json_path, output_path, font_color):
+def aligned_segments_to_ass(json_path, output_path, font_color, font_size="medium"):
     with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
 
     # Fetch the main segments list from the JSON
     segments = data.get("segments", [])
+
+    match(font_size):
+        case "small":
+            size=28
+        case "medium":
+            size=32
+        case "large":
+            size=36
+
+
 
     # Standard header matching the example file exactly
     header = f"""[Script Info]
@@ -65,7 +75,7 @@ Original Timing: Generated
 
 [V4+ Styles]
 Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
-Style: Default,Arial,32,{hex_to_ass(font_color)},&H00FFFFFF,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,1.5,0,8,2,2,20,1
+Style: Default,Arial,{size},{hex_to_ass(font_color)},&H00FFFFFF,&H00000000,&H00000000,-1,0,0,0,100,100,0,0,1,1.5,0,8,2,2,20,1
 
 [Events]
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text

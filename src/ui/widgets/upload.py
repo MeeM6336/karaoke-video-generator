@@ -1,4 +1,4 @@
-from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QCheckBox
+from PySide6.QtWidgets import QWidget, QLineEdit, QVBoxLayout, QCheckBox, QComboBox, QLabel
 from PySide6.QtCore import Qt
 from src.ui.components.task_bar import TaskBar
 from src.ui.components.file_upload import FileUpload
@@ -24,6 +24,14 @@ class Upload(QWidget):
                 font-size: 14px;
                 background-color: #42414d;
                 color: #ffffff;
+            }
+
+            QComboBox {
+                padding: 6px;
+            }
+
+            QLabel {
+                font-size: 16px;
             }
 
             QCheckBox {
@@ -76,12 +84,22 @@ class Upload(QWidget):
         self.song.setPlaceholderText("Song")
         self.song.setClearButtonEnabled(True)
 
+        self.video_visibility_layout = QVBoxLayout()
+        self.video_visibility_layout.setSpacing(15)
+        self.video_visibility_layout.setContentsMargins(0, 0, 800, 0)
+        self.video_visibility = QComboBox()
+        self.video_visibility.addItems(["Public", "Unlisted", "Private"])
+        self.video_visibility.setCurrentText("Public")
+        self.video_visibility_label = QLabel()
+        self.video_visibility_label.setText("Video Visibillity:")
+        self.video_visibility_layout.addWidget(self.video_visibility_label)
+        self.video_visibility_layout.addWidget(self.video_visibility)
+
         self.thumbnail_check = QCheckBox()
         self.thumbnail_check.setText("Generate thumbnail for video")
 
         self.task_bar = TaskBar()
-        self.task_bar.setContentsMargins(0, 339, 0, 0)
-
+        self.task_bar.setContentsMargins(0, 219, 0, 0)
 
         layout.addWidget(self.file_upload)
         layout.addWidget(self.title)
@@ -89,6 +107,7 @@ class Upload(QWidget):
         layout.addWidget(self.artist)
         layout.addWidget(self.song)
         layout.addWidget(self.thumbnail_check)
+        layout.addLayout(self.video_visibility_layout)
         layout.addWidget(self.task_bar)
 
         self.setLayout(layout)
@@ -110,6 +129,10 @@ class Upload(QWidget):
         return self.artist.text()
 
 
+    def get_video_visibility(self):
+        return self.video_visibility.currentText().lower()
+
+
     def get_song(self):
         return self.song.text()
     
@@ -125,5 +148,6 @@ class Upload(QWidget):
             "tags": self.get_tags(),
             "artist": self.get_artist(),
             "song": self.get_song(),
-            "thumbnail": self.get_thumbnail_check()
+            "thumbnail": self.get_thumbnail_check(),
+            "visibility": self.get_video_visibility()
         }

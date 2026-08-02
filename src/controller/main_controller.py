@@ -119,6 +119,9 @@ class MainController:
         if job["font_color"]:
             cmd.extend(["--font_color", job["font_color"]])
 
+        if job["font_size"]:
+                cmd.extend(["--font_size", job["font_size"]])
+
         if job.get("slyrics"):
             cmd.extend(["--slyrics", job["slyrics"]])
         elif job.get("plyrics"):
@@ -211,6 +214,8 @@ class MainController:
             job["artist"],
             "--song",
             job["song"],
+            "--visibility",
+            job["visibility"]
         ]
 
         if job["thumbnail"]:

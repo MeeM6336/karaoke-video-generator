@@ -55,6 +55,14 @@ def main():
   )
 
   parser.add_argument(
+    "--font_size",
+    type=str,
+    required=False,
+    default="medium",
+    help="Font size for the karaoke text."
+  )
+
+  parser.add_argument(
     "--slyrics",
     type=str,
     required=False,
@@ -100,6 +108,7 @@ def main():
     output_path=args.output_file,
     temp_dir=temp_dir,
     font_color=args.font_color,
+    font_size=args.font_size,
     slyrics=args.slyrics,
     plyrics=args.plyrics
   )
