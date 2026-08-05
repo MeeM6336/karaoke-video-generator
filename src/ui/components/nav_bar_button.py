@@ -1,8 +1,8 @@
-from PySide6.QtWidgets import QHBoxLayout, QWidget, QPushButton, QLabel
+from PySide6.QtWidgets import QPushButton, QLabel, QHBoxLayout
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtGui import QPixmap, QFont
+from PySide6.QtGui import QPixmap
 
-class NavBarButton(QWidget):
+class NavBarButton(QPushButton):
 
 	page_changed = Signal(int)
 
@@ -11,50 +11,51 @@ class NavBarButton(QWidget):
 
 		self.page_num = page_num
 
-		layout = QHBoxLayout(self)
-		layout.setContentsMargins(80, 30, 100, 30)
-		layout.setSpacing(30)
+		layout = QHBoxLayout(self) 
+		layout.setSpacing(30) 
 		layout.setAlignment(Qt.AlignLeft)
 
 		self.setObjectName("NavButton")
 
-		self.setAttribute(Qt.WA_Hover, True)
-		self.setAttribute(Qt.WA_StyledBackground, True)
+		self.button_text_r = QLabel(button_text)
 
-		nav_button_style = """
-            QWidget#NavButton {
-                color: white;
-                text-align: left;
-            }
-
-            QWidget#NavButton:hover {
-                background: #2d2d2d;
-            }
-
-            QWidget#NavButton:pressed {
-                background: #1d1d1d;
-            }
-        """
-
-		self.setStyleSheet(nav_button_style)
-
-		self.button_text = QLabel(button_text)
-		self.button_text.setStyleSheet("color: white; font-size: 20px;")
-
-		self.button_icon = QLabel()
-		self.button_icon.setPixmap(
+		self.button_text_l = QLabel(">") 
+		self.button_text_r = QLabel(button_text) 
+		self.button_icon = QLabel() 
+		self.button_icon.setPixmap( 
 			QPixmap(icon_path).scaled(
-				32, 32,
-				Qt.KeepAspectRatio,
-				Qt.SmoothTransformation
-			)
+				22, 22,
+				Qt.KeepAspectRatio, 
+				Qt.SmoothTransformation 
+			) 
 		)
 
-		layout.addWidget(self.button_icon)
-		layout.addWidget(self.button_text)
+		layout.addWidget(self.button_text_l) 
+		layout.addWidget(self.button_icon) 
+		layout.addWidget(self.button_text_r)
+		self.setCheckable(True)
 
+		self.clicked.connect(lambda: self.page_changed.emit(self.page_num))
 
-	
-	def mousePressEvent(self, event):
-		self.page_changed.emit(self.page_num)
-		super().mousePressEvent(event)
+		self.setStyleSheet("""
+				QPushButton#NavButton {
+					background: transparent;
+					border: none;
+					text-align: left;
+					padding: 30px 246px 30px 0px;
+				}
+
+				QPushButton#NavButton:hover {
+					background: #2d2d2d;
+				}
+
+				QPushButton#NavButton:checked {
+					background: #2d2d2d;
+				}
+				
+				QLabel { 
+					color: white; 
+					font-size: 22px; 
+					font-weight: normal; 
+				}
+		""")

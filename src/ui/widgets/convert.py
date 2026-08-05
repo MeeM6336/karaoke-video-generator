@@ -90,7 +90,7 @@ class Convert(QWidget):
         self.compatibility_checkbox.setText("Maximize compatibility")
 
         self.task_bar = TaskBar()
-        self.task_bar.setContentsMargins(0, 517, 0, 0)
+        self.task_bar.setContentsMargins(0, 537, 0, 0)
 
         checkbox_layout.addWidget(self.video_checkbox)
         checkbox_layout.addWidget(self.audio_checkbox)

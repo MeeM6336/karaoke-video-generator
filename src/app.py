@@ -22,5 +22,6 @@ def run():
     window = MainWindow()
     window.setWindowIcon(QIcon("data/assets/icons/logo.png"))
     window.show()
+    window.showMaximized()
 
     sys.exit(app.exec())

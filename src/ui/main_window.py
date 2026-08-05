@@ -16,10 +16,10 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.setWindowTitle("Kirk Karaoke Dashboard")
-        self.setFixedSize(QSize(1440, 980))
 
         main_layout = QHBoxLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
+        main_layout.setSpacing(0)
         self.stacked_layout = QStackedLayout()
 
         self.create_widget = Create()
@@ -56,7 +56,7 @@ class MainWindow(QMainWindow):
 
 
         main_layout.addWidget(self.nav_bar, 1)
-        main_layout.addLayout(self.stacked_layout, 4)
+        main_layout.addLayout(self.stacked_layout, 6)
 
         self.stacked_layout.addWidget(self.create_widget)
         self.stacked_layout.addWidget(self.upload_widget)

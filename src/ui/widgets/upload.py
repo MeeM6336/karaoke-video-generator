@@ -86,7 +86,7 @@ class Upload(QWidget):
 
         self.video_visibility_layout = QVBoxLayout()
         self.video_visibility_layout.setSpacing(15)
-        self.video_visibility_layout.setContentsMargins(0, 0, 800, 0)
+        self.video_visibility_layout.setContentsMargins(0, 0, 1400, 0)
         self.video_visibility = QComboBox()
         self.video_visibility.addItems(["Public", "Unlisted", "Private"])
         self.video_visibility.setCurrentText("Public")
@@ -99,7 +99,7 @@ class Upload(QWidget):
         self.thumbnail_check.setText("Generate thumbnail for video")
 
         self.task_bar = TaskBar()
-        self.task_bar.setContentsMargins(0, 219, 0, 0)
+        self.task_bar.setContentsMargins(0, 239, 0, 0)
 
         layout.addWidget(self.file_upload)
         layout.addWidget(self.title)

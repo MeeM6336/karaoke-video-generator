@@ -110,7 +110,7 @@ class Create(QWidget):
 
         self.font_size_layout = QVBoxLayout()
         self.font_size_layout.setSpacing(15)
-        self.font_size_layout.setContentsMargins(0, 0, 800, 0)
+        self.font_size_layout.setContentsMargins(0, 0, 1400, 0)
         self.font_size_box = QComboBox()
         self.font_size_box.addItems(["Small", "Medium", "Large"])
         self.font_size_box.setCurrentText("Medium")
@@ -120,7 +120,7 @@ class Create(QWidget):
         self.font_size_layout.addWidget(self.font_size_box)
 
         self.task_bar = TaskBar()
-        self.task_bar.setContentsMargins(0, 98, 0, 0)
+        self.task_bar.setContentsMargins(0, 118, 0, 0)
 
         layout.addWidget(self.youtube_url)
         layout.addWidget(self.audio_upload)

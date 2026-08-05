@@ -274,6 +274,7 @@ class MainController:
 
     def change_page(self, index):
         self.current_page = index
+
         self.window.stacked_layout.setCurrentIndex(self.current_page)
         
     
