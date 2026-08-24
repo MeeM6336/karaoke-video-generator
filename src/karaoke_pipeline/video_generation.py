@@ -66,14 +66,18 @@ def download_yt(download_type, url, output_dir):
   }
 
   if download_type == "audio":
-    ydl_opts["format"] = "bestaudio"
+    ydl_opts["format"] = "bestaudio/best"
     ydl_opts["postprocessors"] = [{
       "key": "FFmpegExtractAudio",
       "preferredcodec": "wav",
     }]
 
   elif download_type == "video":
-    ydl_opts["format"] = "bestvideo[ext=mp4]/bestvideo"
+    ydl_opts["format"] = (
+        "bestvideo[vcodec^=avc1][ext=mp4]/"
+        "bestvideo[ext=mp4]/"
+        "bestvideo"
+    )
 
   else:
     raise ValueError("download_type must be 'audio' or 'video'")
@@ -208,7 +212,7 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
     "-i", final_instrumental_path,
 
     "-filter:a",
-    "volume=2dB,loudnorm=I=-14:LRA=11:TP=-1.5",
+    "volume=1dB,loudnorm=I=-14:LRA=11:TP=-1.5",
 
     "-vf",
     (

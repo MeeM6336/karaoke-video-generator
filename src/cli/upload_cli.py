@@ -185,9 +185,9 @@ def create_thumbnail(song, artist):
   draw_centered(draw, artist, font_artist, 450, img.width)
   draw_centered(draw, "Karaoke Version", font_subtitle, 670, img.width, font_color="#8a8a8a")
 
-  img.save(output_dir / f"{song} - {artist} thumbnail.png", quality=100)
+  img.save(output_dir / f"thumbnail.png", quality=100)
 
-  return str(output_dir / f"{song} - {artist} thumbnail.png")
+  return str(output_dir / f"thumbnail.png")
 
 
 def main():

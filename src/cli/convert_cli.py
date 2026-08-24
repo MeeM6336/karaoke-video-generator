@@ -19,7 +19,7 @@ def convert_yt(download_type, url, output_dir, filename="%(title)s", max_compati
     }
 
     if download_type == "audio":
-        ydl_opts["format"] = "bestaudio"
+        ydl_opts["format"] = "bestaudio/best"
         ydl_opts["postprocessors"] = [{
             "key": "FFmpegExtractAudio",
             "preferredcodec": "wav",
