@@ -76,6 +76,13 @@ def main():
     help="Provided plain lyrics"
   )
 
+  parser.add_argument(
+    "--lrc_path",
+    type=str,
+    required=False,
+    help="Provided lrc path"
+  )
+
   # Argument parsing and validation
   args = parser.parse_args()
 
@@ -97,6 +104,11 @@ def main():
       print(f"Video file not found: {args.video_file}")
       sys.exit(1)
 
+  if args.lrc_path is not None:
+    if not os.path.exists(args.lrc_path):
+      print(f"LRC file not found: {args.lrc_path}")
+      sys.exit(1)
+
   if args.font_color is not None and not args.font_color.startswith("#") and len(args.font_color) == 6:
     print(f"Invalid font color: {args.font_color}. Please provide a valid hex code (e.g., #00FFFF).")
     sys.exit(1)
@@ -110,7 +122,8 @@ def main():
     font_color=args.font_color,
     font_size=args.font_size,
     slyrics=args.slyrics,
-    plyrics=args.plyrics
+    plyrics=args.plyrics,
+    lrc_path=args.lrc_path
   )
 
   # Cleanup

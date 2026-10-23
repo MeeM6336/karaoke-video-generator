@@ -74,10 +74,10 @@ def download_yt(download_type, url, output_dir):
 
   elif download_type == "video":
     ydl_opts["format"] = (
-        "bestvideo[vcodec^=avc1][ext=mp4]/"
-        "bestvideo[ext=mp4]/"
-        "bestvideo"
-    )
+      "bestvideo[vcodec^=avc1][ext=mp4]/"
+      "best[ext=mp4][vcodec^=avc1]/"
+      "best"
+  )
 
   else:
     raise ValueError("download_type must be 'audio' or 'video'")
@@ -92,7 +92,7 @@ def download_yt(download_type, url, output_dir):
     return str(original_file.with_suffix(".mp4"))
 
 
-def video_generation(font_color, yt_link=None, audio_path="", video_path="", output_path=None, temp_dir=None, slyrics=None, plyrics=None, font_size=None):
+def video_generation(font_color, yt_link=None, audio_path="", video_path="", output_path=None, temp_dir=None, slyrics=None, plyrics=None, font_size=None, lrc_path=None):
   segments_path = None
 
   audio_path = (
@@ -110,7 +110,15 @@ def video_generation(font_color, yt_link=None, audio_path="", video_path="", out
   if output_path is None:
     output_path = "output/output_video.mp4"
 
-  if plyrics is None and slyrics is None:
+  if lrc_path is not None:
+    
+    lrc_path = Path(lrc_path)
+    with open(lrc_path, "r", encoding="utf-8") as f:
+      lyrics = f.read()
+      
+    segments = lrc_to_segments(lyrics, "synced")
+
+  elif lrc_path is None and plyrics is None and slyrics is None:
     segments = run_menu()
 
   elif plyrics not in (None, "-1"):

@@ -26,7 +26,11 @@ def convert_yt(download_type, url, output_dir, filename="%(title)s", max_compati
         }]
 
     elif download_type == "video":
-        ydl_opts["format"] = "bestvideo[ext=mp4]/bestvideo"
+        ydl_opts["format"] = (
+          "bestvideo[vcodec^=avc1][ext=mp4]/"
+          "best[ext=mp4][vcodec^=avc1]/"
+          "best"
+        )
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)

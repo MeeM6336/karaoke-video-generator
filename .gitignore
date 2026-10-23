@@ -13,6 +13,7 @@ output
 data/oauth
 data/bg_videos
 data/audio
+downloads
 
 # Secret
 client_secrets.json

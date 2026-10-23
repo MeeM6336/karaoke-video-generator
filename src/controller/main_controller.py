@@ -122,7 +122,9 @@ class MainController:
         if job["font_size"]:
                 cmd.extend(["--font_size", job["font_size"]])
 
-        if job.get("slyrics"):
+        if job.get("lrc_path"):
+            cmd.extend(["--lrc_path", job["lrc_path"]])
+        elif job.get("slyrics"):
             cmd.extend(["--slyrics", job["slyrics"]])
         elif job.get("plyrics"):
             cmd.extend(["--plyrics", job["plyrics"]])

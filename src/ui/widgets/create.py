@@ -108,6 +108,9 @@ class Create(QWidget):
         self.font_color_layout.addWidget(self.color_button)
         self.color_button.clicked.connect(self.pick_font_color)
 
+        self.lyric_upload = FileUpload("LRC", "Select a lyric file")
+        self.lyric_upload.file_path.setClearButtonEnabled(True)
+
         self.font_size_layout = QVBoxLayout()
         self.font_size_layout.setSpacing(15)
         self.font_size_layout.setContentsMargins(0, 0, 1400, 0)
@@ -120,7 +123,7 @@ class Create(QWidget):
         self.font_size_layout.addWidget(self.font_size_box)
 
         self.task_bar = TaskBar()
-        self.task_bar.setContentsMargins(0, 118, 0, 0)
+        self.task_bar.setContentsMargins(0, 23, 0, 0)
 
         layout.addWidget(self.youtube_url)
         layout.addWidget(self.audio_upload)
@@ -129,6 +132,7 @@ class Create(QWidget):
         layout.addWidget(self.filename)
         layout.addLayout(self.font_color_layout)
         layout.addLayout(self.lyric_search_layout)
+        layout.addWidget(self.lyric_upload)
         layout.addLayout(self.font_size_layout)
         layout.addWidget(self.task_bar)
 
@@ -169,6 +173,9 @@ class Create(QWidget):
     def set_lyrics(self, lyrics):
         self.lyrics = lyrics
 
+    def get_lrc_path(self):
+        return self.lyric_upload.get_path()
+
 
     def pick_font_color(self):
         current = QColor(self.font_color.text())
@@ -195,6 +202,7 @@ class Create(QWidget):
         }
 
         lyric_obj = self.get_lyrics()
+        lrc_path = self.get_lrc_path()
 
         if lyric_obj is not None:
             if lyric_obj.get("syncedLyrics"):
@@ -202,4 +210,9 @@ class Create(QWidget):
             elif lyric_obj.get("plainLyrics"):
                 job["plyrics"] = lyric_obj["plainLyrics"]
 
+        elif lrc_path is not None:
+            job["lrc_path"] = lrc_path
+
         return job
+
+    # NEED TO IMPLEMENT GETTING MANUAL LYRICS INTO get_job()
